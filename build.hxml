@@ -1,0 +1,9 @@
+# HXBun + HTMX + Tailwind build configuration
+-cp src
+-lib hxbun
+-lib hxnodejs
+-lib thx.core
+-js bin/server.js
+-main Server
+-D js-es=2022
+-D nodejs

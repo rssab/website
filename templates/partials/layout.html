@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>::title:: | HxHTMX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: "#f0f9ff", 100: "#e0f2fe", 200: "#bae6fd", 300: "#7dd3fc", 400: "#38bdf8", 500: "#0ea5e9", 600: "#0284c7", 700: "#0369a1", 800: "#075985", 900: "#0c4a6e" },
+                        dark: { 800: "#1e293b", 900: "#0f172a", 950: "#020617" }
+                    }
+                }
+            }
+        };
+    </script>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "light") {
+                document.documentElement.classList.remove("dark");
+            }
+        })();
+    </script>
+    <style>
+        .htmx-request { opacity: 0.5; transition: opacity 300ms; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-dark-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+    ::navigation::
+    <main id="main-content" class="container mx-auto px-4 py-8 max-w-6xl fade-in">
+        ::content::
+    </main>
+    ::footer::
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains("dark");
+            if (isDark) {
+                html.classList.remove("dark");
+                localStorage.setItem("theme", "light");
+            } else {
+                html.classList.add("dark");
+                localStorage.setItem("theme", "dark");
+            }
+        }
+        document.body.addEventListener("htmx:afterSwap", function(e) {
+            e.detail.elt.classList.add("fade-in");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<div class="space-y-8">
+    <header class="text-center py-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary-500 to-primary-700 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent">
+            ⚙️ Equipment & Tools
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            The tools, libraries, and infrastructure powering our stack.
+        </p>
+    </header>
+    
+    <section class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2">
+                <span>🔶</span> Haxe Ecosystem
+            </h2>
+            <ul class="space-y-3">
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">hxnodejs</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Node.js externs for Haxe</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">thx.core</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Functional programming utilities</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">HxBun</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Bun runtime bindings for Haxe</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">tink_web</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Macro-powered web routing</span>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400 flex items-center gap-2">
+                <span>🌐</span> Frontend Stack
+            </h2>
+            <ul class="space-y-3">
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">HTMX</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">High-power tools for HTML</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">Tailwind CSS</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Utility-first CSS framework</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">Alpine.js</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Lightweight reactivity (optional)</span>
+                </li>
+                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
+                    <span class="text-primary-500 font-mono text-sm">Hyperscript</span>
+                    <span class="text-gray-600 dark:text-gray-400 text-sm">Event-driven scripting</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+    
+    <section class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
+        <h2 class="text-xl font-bold mb-4 text-green-600 dark:text-green-400 flex items-center gap-2">
+            <span>🖥️</span> Infrastructure
+        </h2>
+        <div class="grid md:grid-cols-3 gap-4">
+            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
+                <div class="text-3xl mb-2">🥟</div>
+                <h4 class="font-semibold mb-1">Bun Runtime</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">All-in-one JavaScript runtime</p>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
+                <div class="text-3xl mb-2">🐳</div>
+                <h4 class="font-semibold mb-1">Docker</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Containerized deployments</p>
+            </div>
+            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
+                <div class="text-3xl mb-2">☁️</div>
+                <h4 class="font-semibold mb-1">Hetzner Cloud</h4>
+                <p class="text-sm text-gray-600 dark:text-gray-400">European cloud hosting</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="bg-gradient-to-br from-purple-500/10 to-purple-700/10 rounded-2xl p-8">
+        <h2 class="text-2xl font-bold mb-4 text-center">Development Setup</h2>
+        <div class="bg-dark-900 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto">
+            <pre># Install Bun
+curl -fsSL https://bun.sh/install | bash
+
+# Install Haxe
+haxelib install hxnodejs
+haxelib install thx.core
+
+# Build and run
+haxe build.hxml
+bun run bin/server.js</pre>
+        </div>
+    </section>
+</div>
