@@ -8,9 +8,102 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <style>
-        .htmx-request { opacity: 0.5; transition: opacity 300ms; }
+        /* HTMX Loading Indicators */
+        .htmx-request { opacity: 0.6; transition: opacity 200ms ease-out; }
+        .htmx-request.htmx-settling { opacity: 1; }
+        
+        /* Top progress bar */
+        #loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f97316, #fb923c, #fdba74);
+            z-index: 9999;
+            width: 0%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        #loading-bar.htmx-request {
+            opacity: 1;
+            animation: loadingProgress 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; left: 0; }
+            50% { width: 60%; left: 20%; }
+            100% { width: 0%; left: 100%; }
+        }
+        
+        /* Spinner for longer loads */
+        .htmx-indicator {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9998;
+        }
+        
+        .htmx-request .htmx-indicator,
+        .htmx-request.htmx-indicator {
+            display: block;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(249, 115, 22, 0.2);
+            border-top-color: #f97316;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Navigation loading state */
+        .nav-link.htmx-request {
+            pointer-events: none;
+        }
+        
         .fade-in { animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Directional slide animations */
+        .slide-from-right { animation: slideFromRight 0.5s ease-out; }
+        .slide-from-left { animation: slideFromLeft 0.5s ease-out; }
+        .slide-from-top { animation: slideFromTop 0.5s ease-out; }
+        .slide-from-bottom { animation: slideFromBottom 0.5s ease-out; }
+        .slide-from-top-left { animation: slideFromTopLeft 0.5s ease-out; }
+        .slide-from-bottom-right { animation: slideFromBottomRight 0.5s ease-out; }
+        
+        @keyframes slideFromRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideFromLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideFromTop {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideFromBottom {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideFromTopLeft {
+            from { opacity: 0; transform: translate(-40px, -30px); }
+            to { opacity: 1; transform: translate(0, 0); }
+        }
+        @keyframes slideFromBottomRight {
+            from { opacity: 0; transform: translate(40px, 30px); }
+            to { opacity: 1; transform: translate(0, 0); }
+        }
         
         .gradient-text {
             background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
@@ -120,14 +213,66 @@
     </style>
 </head>
 <body class="bg-dark-900 text-gray-100 min-h-screen relative">
+    <!-- Loading indicator bar -->
+    <div id="loading-bar"></div>
+    
     ::navigation::
     <main id="main-content" class="container mx-auto px-4 py-8 max-w-6xl fade-in">
         ::content::
     </main>
     ::footer::
     <script>
-        document.body.addEventListener("htmx:afterSwap", function(e) {
-            e.detail.elt.classList.add("fade-in");
+        // Loading bar element
+        const loadingBar = document.getElementById('loading-bar');
+        
+        // Show loading bar on request start
+        document.body.addEventListener('htmx:beforeRequest', function(e) {
+            loadingBar.classList.add('htmx-request');
+        });
+        
+        // Hide loading bar on request end
+        document.body.addEventListener('htmx:afterRequest', function(e) {
+            loadingBar.classList.remove('htmx-request');
+        });
+        
+        // Direction to animation class mapping
+        const directionAnimations = {
+            'right': 'slide-from-right',
+            'left': 'slide-from-left',
+            'top': 'slide-from-top',
+            'bottom': 'slide-from-bottom',
+            'top-left': 'slide-from-top-left',
+            'bottom-right': 'slide-from-bottom-right',
+        };
+        
+        // Page to direction mapping
+        const pageDirections = {
+            '/': 'top',
+            '/home': 'top',
+            '/technology': 'right',
+            '/kits': 'left',
+            '/community': 'bottom',
+            '/about': 'top-left',
+            '/contact': 'bottom-right',
+        };
+        
+        let currentDirection = 'top';
+        
+        // Track which page we're going to
+        document.body.addEventListener('htmx:beforeRequest', function(e) {
+            const path = e.detail.pathInfo?.requestPath || '';
+            currentDirection = pageDirections[path] || 'top';
+        });
+        
+        // Handle content swap
+        document.body.addEventListener('htmx:afterSwap', function(e) {
+            // Remove any existing slide classes
+            e.detail.elt.classList.remove('fade-in', 'slide-from-right', 'slide-from-left', 
+                'slide-from-top', 'slide-from-bottom', 'slide-from-top-left', 'slide-from-bottom-right');
+            
+            // Add directional animation
+            const animClass = directionAnimations[currentDirection] || 'fade-in';
+            e.detail.elt.classList.add(animClass);
             
             // Reset and restart staggered animations
             const staggerElements = e.detail.elt.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');
@@ -136,12 +281,23 @@
                 el.offsetHeight; // Trigger reflow
                 el.style.animation = null;
             });
+            
+            // Re-observe new stagger elements
+            staggerElements.forEach((el) => {
+                observer.observe(el);
+            });
         });
         
-        // Add scroll-triggered animations for better UX
+        // Handle request errors
+        document.body.addEventListener('htmx:responseError', function(e) {
+            loadingBar.classList.remove('htmx-request');
+            console.error('Request failed:', e.detail.xhr.status);
+        });
+        
+        // Scroll-triggered animations
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -50px 0px',
         };
         
         const observer = new IntersectionObserver((entries) => {
