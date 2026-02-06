@@ -265,9 +265,9 @@ class ResonantBackground {
     }
     
     setupPageTransitions() {
-        // Listen for HTMX navigation
-        document.body.addEventListener('htmx:beforeRequest', (e) => {
-            const path = e.detail.pathInfo?.requestPath || e.detail.path || '';
+        // Listen for HTMX content swap (when page actually transitions)
+        document.body.addEventListener('htmx:beforeSwap', (e) => {
+            const path = e.detail.pathInfo?.requestPath || e.detail.requestConfig?.path || '';
             const delta = this.pageDeltas[path] || { x: 0, y: 0 };
             
             // Add delta to current position (consistent movement amount)
