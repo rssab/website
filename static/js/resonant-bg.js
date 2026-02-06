@@ -220,8 +220,8 @@ class ResonantBackground {
                 vec3 lightPos = cameraPos;
                 
                 float lighting = lightPointDiffuse(rayPos, lightPos);
-                lighting = min(lighting, 0.1); // Cap max brightness
-                color *= 2.0 * lighting * 2.0;
+                lighting = min(lighting, 0.08); // Cap max brightness
+                color *= 1.7 * lighting * 1.7;
                 
                 color = pow(color, vec3(0.5));
                 
@@ -297,7 +297,7 @@ class ResonantBackground {
             return;
         }
         
-        const currentTime = ((Date.now() - this.startTime) / 1000.0 + 300.0) * 0.015; // Start 300s ahead
+        const currentTime = ((Date.now() - this.startTime) / 1000.0 + 600.0) * 0.015; // Start 600s ahead
         const timeLocation = this.gl.getUniformLocation(this.program, 'iTime');
         this.gl.uniform1f(timeLocation, currentTime);
         
