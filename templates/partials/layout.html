@@ -111,20 +111,25 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Directional slide animations */
-        .slide-from-right { animation: slideFromRight 0.5s ease-out; }
-        .slide-from-left { animation: slideFromLeft 0.5s ease-out; }
+        .slide-from-right { animation: slideFromRight 0.4s ease-out; backface-visibility: hidden; }
+        .slide-from-left { animation: slideFromLeft 0.4s ease-out; backface-visibility: hidden; }
         .slide-from-top { animation: slideFromTop 0.5s ease-out; }
         .slide-from-bottom { animation: slideFromBottom 0.5s ease-out; }
         .slide-from-top-left { animation: slideFromTopLeft 0.5s ease-out; }
         .slide-from-bottom-right { animation: slideFromBottomRight 0.5s ease-out; }
         
         @keyframes slideFromRight {
-            from { opacity: 0; transform: translateX(100px); }
+            from { opacity: 0; transform: translateX(40px); }
             to { opacity: 1; transform: translateX(0); }
         }
         @keyframes slideFromLeft {
-            from { opacity: 0; transform: translateX(-100px); }
+            from { opacity: 0; transform: translateX(-40px); }
             to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Optimize animations */
+        #main-content {
+            will-change: transform, opacity;
         }
         @keyframes slideFromTop {
             from { opacity: 0; transform: translateY(-40px); }
