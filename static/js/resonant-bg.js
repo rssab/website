@@ -26,14 +26,14 @@ class ResonantBackground {
         this.scrollSmoothing = 0.08; // Smoothing factor for scroll
         
         this.pageDeltas = {
-            '/': { x: 0, y: 0.3 },
-            '/home': { x: 0, y: 0.3 },
-            '/technology': { x: 0.4, y: 0 },
-            '/kits': { x: -0.4, y: 0 },
-            '/community': { x: 0, y: -0.3 },
-            '/about': { x: -0.3, y: 0.2 },
-            '/contact': { x: 0.3, y: -0.2 },
-            '/equipment': { x: 0.2, y: 0.25 },
+            '/': { x: 0.2, y: 0 },
+            '/home': { x: 0.2, y: 0 },
+            '/technology': { x: 0.2, y: 0 },
+            '/kits': { x: 0.2, y: 0 },
+            '/community': { x: 0.2, y: 0 },
+            '/about': { x: 0.2, y: 0 },
+            '/contact': { x: 0.2, y: 0 },
+            '/equipment': { x: 0.2, y: 0 },
         };
         
         this.init();
