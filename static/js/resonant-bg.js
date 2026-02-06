@@ -25,16 +25,18 @@ class ResonantBackground {
         this.scrollInfluence = 0.0008; // How much scroll affects camera
         this.scrollSmoothing = 0.08; // Smoothing factor for scroll
         
-        this.pageDeltas = {
-            '/': { x: 0.2, y: 0 },
-            '/home': { x: 0.2, y: 0 },
-            '/technology': { x: 0.2, y: 0 },
-            '/kits': { x: 0.2, y: 0 },
-            '/community': { x: 0.2, y: 0 },
-            '/about': { x: 0.2, y: 0 },
-            '/contact': { x: 0.2, y: 0 },
-            '/equipment': { x: 0.2, y: 0 },
+        // Page positions on the horizontal plane (like panels side by side)
+        this.pagePositions = {
+            '/': 0,
+            '/home': 0,
+            '/technology': 1,
+            '/kits': 2,
+            '/community': 3,
+            '/about': 4,
+            '/contact': 5,
+            '/equipment': 6,
         };
+        this.panStep = 0.5; // How much camera moves per page
         
         this.init();
         this.setupVisibilityHandling();
@@ -58,9 +60,8 @@ class ResonantBackground {
     setupPageTransitions() {
         document.body.addEventListener('htmx:beforeSwap', (e) => {
             const path = e.detail.pathInfo?.requestPath || e.detail.requestConfig?.path || '';
-            const delta = this.pageDeltas[path] || { x: 0, y: 0 };
-            this.targetPanX = this.panX + delta.x;
-            this.targetPanY = this.panY + delta.y;
+            const position = this.pagePositions[path] ?? 0;
+            this.targetPanX = position * this.panStep;
         });
     }
     

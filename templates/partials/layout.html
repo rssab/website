@@ -291,23 +291,27 @@
             'bottom-right': 'slide-from-bottom-right',
         };
         
-        // Page to direction mapping - all slide from right for consistency
-        const pageDirections = {
-            '/': 'right',
-            '/home': 'right',
-            '/technology': 'right',
-            '/kits': 'right',
-            '/community': 'right',
-            '/about': 'right',
-            '/contact': 'right',
+        // Page positions (like panels laid out horizontally)
+        const pagePositions = {
+            '/': 0,
+            '/home': 0,
+            '/technology': 1,
+            '/kits': 2,
+            '/community': 3,
+            '/about': 4,
+            '/contact': 5,
         };
         
-        let currentDirection = 'top';
+        let currentPosition = 0;
+        let currentDirection = 'right';
         
-        // Track which page we're going to
+        // Track which page we're going to and determine direction
         document.body.addEventListener('htmx:beforeRequest', function(e) {
             const path = e.detail.pathInfo?.requestPath || '';
-            currentDirection = pageDirections[path] || 'top';
+            const newPosition = pagePositions[path] ?? 0;
+            // Go right if moving to higher position, left if lower
+            currentDirection = newPosition >= currentPosition ? 'right' : 'left';
+            currentPosition = newPosition;
         });
         
         // Handle content swap
