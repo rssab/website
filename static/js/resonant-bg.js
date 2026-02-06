@@ -12,8 +12,27 @@ class ResonantBackground {
         this.animationId = null;
         this.isVisible = true;
         
+        // Pan offset for page transitions
+        this.panX = 0;
+        this.panY = 0;
+        this.targetPanX = 0;
+        this.targetPanY = 0;
+        this.panSpeed = 0.08;
+        
+        // Direction mapping for pages
+        this.pageDirections = {
+            '/': { x: 0, y: -0.15 },           // Home: from top
+            '/home': { x: 0, y: -0.15 },       // Home: from top
+            '/technology': { x: 0.2, y: 0 },   // Technology: from right
+            '/kits': { x: -0.2, y: 0 },        // Kits: from left
+            '/community': { x: 0, y: 0.15 },   // Community: from bottom
+            '/about': { x: -0.15, y: -0.1 },   // About: from top-left
+            '/contact': { x: 0.15, y: 0.1 },   // Contact: from bottom-right
+        };
+        
         this.init();
         this.setupVisibilityHandling();
+        this.setupPageTransitions();
     }
     
     init() {
@@ -85,6 +104,7 @@ class ResonantBackground {
             
             uniform float u_time;
             uniform vec2 u_resolution;
+            uniform vec2 u_pan;
             
             // Colors - very subtle
             const vec3 bg = vec3(0.039, 0.039, 0.039);
@@ -121,6 +141,10 @@ class ResonantBackground {
                 vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
                 vec2 uvAspect = (uv - 0.5) * aspect + 0.5;
                 
+                // Apply pan offset for page transitions
+                vec2 panOffset = u_pan * 0.5;
+                uvAspect += panOffset;
+                
                 // Animation speed (doubled)
                 float time = u_time * 0.0006;
                 
@@ -129,14 +153,15 @@ class ResonantBackground {
                 // Multiple radiating wave sources - subtle but visible
                 float intensity = 0.07;
                 
-                // Center emanation - strongest
-                color += concentricWaves(uvAspect, vec2(0.5, 0.5), time) * orange1 * intensity * 1.1;
+                // Center emanation - strongest (moves with pan)
+                vec2 center = vec2(0.5, 0.5) + panOffset * 0.3;
+                color += concentricWaves(uvAspect, center, time) * orange1 * intensity * 1.1;
                 
-                // Corner emanations - offset timing for variety
-                color += concentricWaves(uvAspect, vec2(0.1, 0.15), time + 10.0) * orange2 * intensity * 0.9;
-                color += concentricWaves(uvAspect, vec2(0.9, 0.85), time + 20.0) * orange3 * intensity * 0.9;
-                color += concentricWaves(uvAspect, vec2(0.85, 0.2), time + 30.0) * orange1 * intensity * 0.7;
-                color += concentricWaves(uvAspect, vec2(0.15, 0.8), time + 40.0) * orange2 * intensity * 0.7;
+                // Corner emanations - offset timing for variety (move with pan)
+                color += concentricWaves(uvAspect, vec2(0.1, 0.15) + panOffset * 0.2, time + 10.0) * orange2 * intensity * 0.9;
+                color += concentricWaves(uvAspect, vec2(0.9, 0.85) + panOffset * 0.2, time + 20.0) * orange3 * intensity * 0.9;
+                color += concentricWaves(uvAspect, vec2(0.85, 0.2) + panOffset * 0.2, time + 30.0) * orange1 * intensity * 0.7;
+                color += concentricWaves(uvAspect, vec2(0.15, 0.8) + panOffset * 0.2, time + 40.0) * orange2 * intensity * 0.7;
                 
                 // Gentle vignette
                 float vignette = 1.0 - length(uv - 0.5) * 0.2;
@@ -216,9 +241,16 @@ class ResonantBackground {
             return;
         }
         
+        // Update pan interpolation
+        this.updatePan();
+        
         const currentTime = Date.now() - this.startTime;
         const timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
         this.gl.uniform1f(timeLocation, currentTime);
+        
+        // Update pan uniform
+        const panLocation = this.gl.getUniformLocation(this.program, 'u_pan');
+        this.gl.uniform2f(panLocation, this.panX, this.panY);
         
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
         
@@ -229,6 +261,32 @@ class ResonantBackground {
         document.addEventListener('visibilitychange', () => {
             this.isVisible = !document.hidden;
         });
+    }
+    
+    setupPageTransitions() {
+        // Listen for HTMX navigation
+        document.body.addEventListener('htmx:beforeRequest', (e) => {
+            const path = e.detail.pathInfo?.requestPath || e.detail.path || '';
+            const direction = this.pageDirections[path] || { x: 0, y: 0 };
+            
+            // Set target pan (opposite direction for "coming from" effect)
+            this.targetPanX = -direction.x;
+            this.targetPanY = -direction.y;
+        });
+        
+        document.body.addEventListener('htmx:afterSwap', () => {
+            // After content loads, pan back to center
+            setTimeout(() => {
+                this.targetPanX = 0;
+                this.targetPanY = 0;
+            }, 100);
+        });
+    }
+    
+    updatePan() {
+        // Smooth interpolation toward target
+        this.panX += (this.targetPanX - this.panX) * this.panSpeed;
+        this.panY += (this.targetPanY - this.panY) * this.panSpeed;
     }
     
     destroy() {
