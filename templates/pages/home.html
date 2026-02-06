@@ -1,61 +1,112 @@
-<div class="space-y-12">
-    <!-- Hero Section -->
-    <section class="text-center py-16 bg-gradient-to-br from-primary-500/10 to-primary-700/10 dark:from-primary-400/10 dark:to-primary-600/10 rounded-3xl">
-        <h1 class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary-500 to-primary-700 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent">
-            Welcome to HxHTMX
-        </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-            A modern web stack combining the elegance of Haxe with the simplicity of HTMX 
-            and the speed of Bun. Build reactive applications without JavaScript complexity.
+<!-- Hero Section -->
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-accent-900/20 via-dark-900 to-dark-950"></div>
+    <div class="container mx-auto px-4 py-24 md:py-32 max-w-6xl relative">
+        <div class="max-w-3xl">
+            <p class="stagger-1 text-accent-500 font-medium mb-4 tracking-wide uppercase text-sm">Distributed Mode Loudspeakers</p>
+            <h1 class="stagger-2 text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                Like headphones<br>
+                <span class="gradient-text">for the whole dance floor.</span>
+            </h1>
+            <p class="stagger-3 text-xl text-gray-400 mb-8 max-w-2xl">
+                Crystal-clear audio everywhere, not just the sweet spot. 
+                Loud enough to feel, gentle enough to talk over. 
+                Open-source DIY speaker kits coming late 2026.
+            </p>
+            <div class="stagger-4 flex flex-wrap gap-4">
+                <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+                   class="btn-primary pulse-on-hover px-8 py-3 bg-accent-600 hover:bg-accent-500 text-white font-semibold rounded-lg">
+                    Join the Waitlist →
+                </a>
+                <a href="/about" hx-get="/about" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+                   class="btn-secondary px-8 py-3 border border-gray-700 hover:border-accent-600 text-gray-300 hover:text-white font-semibold rounded-lg">
+                    How It Works
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Social Proof -->
+<section class="border-y border-gray-800 bg-dark-950/50">
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+        <div class="grid md:grid-cols-3 gap-8">
+            <blockquote class="stagger-1 text-center md:text-left hover-lift p-6 rounded-lg bg-gradient-to-br from-dark-800/50 to-dark-900/50">
+                <p class="text-lg text-gray-300 italic mb-4">
+                    "I've heard probably thousands of sound systems at different festivals. 
+                    This is the best I've ever heard."
+                </p>
+                <cite class="text-sm text-accent-400">— Festival sound engineer</cite>
+            </blockquote>
+            <blockquote class="stagger-2 text-center md:text-left hover-lift p-6 rounded-lg bg-gradient-to-br from-dark-800/50 to-dark-900/50">
+                <p class="text-lg text-gray-300 italic mb-4">
+                    "It doesn't sound like a PA system. It's like listening through 
+                    a really good pair of headphones."
+                </p>
+                <cite class="text-sm text-accent-400">— Early listener</cite>
+            </blockquote>
+            <blockquote class="stagger-3 text-center md:text-left hover-lift p-6 rounded-lg bg-gradient-to-br from-dark-800/50 to-dark-900/50">
+                <p class="text-lg text-gray-300 italic mb-4">
+                    "I always need earplugs, but with this system — even when very loud — 
+                    it doesn't hurt and you can still have a conversation."
+                </p>
+                <cite class="text-sm text-accent-400">— Party organizer</cite>
+            </blockquote>
+        </div>
+    </div>
+</section>
+
+<!-- Key Features -->
+<section class="container mx-auto px-4 py-24 max-w-6xl">
+    <div class="text-center mb-16">
+        <h2 class="stagger-1 text-3xl md:text-4xl font-bold mb-4">Why DML is different</h2>
+        <p class="stagger-2 text-gray-400 max-w-2xl mx-auto">
+            Distributed Mode Loudspeakers break the rules of traditional speaker design.
         </p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="/mission" hx-get="/mission" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
-               class="px-8 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
-                Our Mission →
-            </a>
-            <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
-               class="px-8 py-3 bg-gray-200 dark:bg-dark-800 hover:bg-gray-300 dark:hover:bg-gray-700 font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
-                Get in Touch
-            </a>
-        </div>
-    </section>
+    </div>
     
-    <!-- Features Grid -->
-    <section class="grid md:grid-cols-3 gap-6">
-        <div class="p-6 bg-white dark:bg-dark-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="text-4xl mb-4">⚡</div>
-            <h3 class="text-xl font-bold mb-2 text-primary-600 dark:text-primary-400">Blazing Fast</h3>
-            <p class="text-gray-600 dark:text-gray-400">Powered by Bun runtime for incredible server performance and lightning-fast response times.</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="stagger-1 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6 cursor-default group">
+            <div class="text-3xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🎯</div>
+            <h3 class="text-lg font-semibold mb-2 text-accent-400">Full-range clarity</h3>
+            <p class="text-gray-500 text-sm">
+                100Hz–20kHz from a single panel. No crossovers, no phase issues.
+            </p>
         </div>
-        <div class="p-6 bg-white dark:bg-dark-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="text-4xl mb-4">🎯</div>
-            <h3 class="text-xl font-bold mb-2 text-primary-600 dark:text-primary-400">Type Safe</h3>
-            <p class="text-gray-600 dark:text-gray-400">Haxe's powerful type system catches errors at compile time, not runtime.</p>
+        <div class="stagger-2 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6 cursor-default group">
+            <div class="text-3xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🔊</div>
+            <h3 class="text-lg font-semibold mb-2 text-accent-400">Even coverage</h3>
+            <p class="text-gray-500 text-sm">
+                Wide bipolar dispersion. Stereo imaging across the entire floor, not just center.
+            </p>
         </div>
-        <div class="p-6 bg-white dark:bg-dark-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="text-4xl mb-4">🔄</div>
-            <h3 class="text-xl font-bold mb-2 text-primary-600 dark:text-primary-400">HTMX Powered</h3>
-            <p class="text-gray-600 dark:text-gray-400">Seamless partial page updates without the complexity of heavy JavaScript frameworks.</p>
+        <div class="stagger-3 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6 cursor-default group">
+            <div class="text-3xl mb-4 transform group-hover:scale-110 transition-transform duration-300">👂</div>
+            <h3 class="text-lg font-semibold mb-2 text-accent-400">Low fatigue</h3>
+            <p class="text-gray-500 text-sm">
+                Extremely low distortion at high SPL. Hours of listening without ear fatigue.
+            </p>
         </div>
-    </section>
-    
-    <!-- Stats Section -->
-    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-        <div class="p-6 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-xl">
-            <div class="text-3xl font-bold text-green-600 dark:text-green-400">99.9%</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Uptime</div>
+        <div class="stagger-4 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6 cursor-default group">
+            <div class="text-3xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🛠️</div>
+            <h3 class="text-lg font-semibold mb-2 text-accent-400">DIY accessible</h3>
+            <p class="text-gray-500 text-sm">
+                3D-printed parts, modular design. Build your own festival-grade system.
+            </p>
         </div>
-        <div class="p-6 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl">
-            <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">&lt;50ms</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Response Time</div>
-        </div>
-        <div class="p-6 bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-xl">
-            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">10K+</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">Requests/sec</div>
-        </div>
-        <div class="p-6 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-xl">
-            <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">0</div>
-            <div class="text-sm text-gray-600 dark:text-gray-400">JS Frameworks</div>
-        </div>
-    </section>
-</div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="bg-gradient-to-br from-accent-900/30 via-dark-900 to-dark-900 border-t border-gray-800">
+    <div class="container mx-auto px-4 py-24 max-w-6xl text-center">
+        <h2 class="stagger-1 text-3xl md:text-4xl font-bold mb-4">Be first in line</h2>
+        <p class="stagger-2 text-gray-400 max-w-xl mx-auto mb-8">
+            DIY kits launching late 2026. Join the waitlist for early access, 
+            build updates, and community news.
+        </p>
+        <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+           class="stagger-3 btn-primary pulse-on-hover inline-block px-8 py-3 bg-accent-600 hover:bg-accent-500 text-white font-semibold rounded-lg">
+            Join the Waitlist →
+        </a>
+    </div>
+</section>
