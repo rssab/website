@@ -19,15 +19,16 @@ class ResonantBackground {
         this.targetPanY = 0;
         this.panSpeed = 0.04;
         
-        // Direction mapping for pages (stronger movement)
-        this.pageDirections = {
-            '/': { x: 0, y: -0.5 },            // Home: from top
-            '/home': { x: 0, y: -0.5 },        // Home: from top
-            '/technology': { x: 0.6, y: 0 },   // Technology: from right
-            '/kits': { x: -0.6, y: 0 },        // Kits: from left
-            '/community': { x: 0, y: 0.5 },    // Community: from bottom
-            '/about': { x: -0.4, y: -0.3 },    // About: from top-left
-            '/contact': { x: 0.4, y: 0.3 },    // Contact: from bottom-right
+        // Movement delta for each page (how much to move, not where to go)
+        // Positive x = waves move right, Positive y = waves move down
+        this.pageDeltas = {
+            '/': { x: 0, y: 0.4 },             // Home: waves move down (content from top)
+            '/home': { x: 0, y: 0.4 },         // Home: waves move down
+            '/technology': { x: -0.5, y: 0 },  // Technology: waves move left (content from right)
+            '/kits': { x: 0.5, y: 0 },         // Kits: waves move right (content from left)
+            '/community': { x: 0, y: -0.4 },   // Community: waves move up (content from bottom)
+            '/about': { x: 0.35, y: 0.25 },    // About: waves move down-right (content from top-left)
+            '/contact': { x: -0.35, y: -0.25 },// Contact: waves move up-left (content from bottom-right)
         };
         
         this.init();
@@ -267,14 +268,11 @@ class ResonantBackground {
         // Listen for HTMX navigation
         document.body.addEventListener('htmx:beforeRequest', (e) => {
             const path = e.detail.pathInfo?.requestPath || e.detail.path || '';
-            const direction = this.pageDirections[path] || { x: 0, y: 0 };
+            const delta = this.pageDeltas[path] || { x: 0, y: 0 };
             
-            // Set target to new position - waves drift in that direction
-            this.targetPanX = direction.x;
-            this.targetPanY = direction.y;
-            
-            // Store direction for content animation
-            window.currentPageDirection = direction;
+            // Add delta to current position (consistent movement amount)
+            this.targetPanX = this.panX + delta.x;
+            this.targetPanY = this.panY + delta.y;
         });
     }
     
