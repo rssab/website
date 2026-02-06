@@ -1,6 +1,6 @@
 /**
  * Resonant Background Shader
- * WebGL2 animated background with slow, subtle radiating wave patterns
+ * Direct port from shadertoy.com/view/4lyBR3
  */
 
 class ResonantBackground {
@@ -12,28 +12,41 @@ class ResonantBackground {
         this.animationId = null;
         this.isVisible = true;
         
-        // Pan offset for page transitions
+        // Pan for page transitions
         this.panX = 0;
         this.panY = 0;
         this.targetPanX = 0;
         this.targetPanY = 0;
         this.panSpeed = 0.04;
         
-        // Movement delta for each page (how much to move, not where to go)
-        // Positive x = pattern shifts LEFT, Positive y = pattern shifts DOWN
         this.pageDeltas = {
-            '/': { x: 0, y: 0.4 },             // Home: pattern down (content slides down from top)
-            '/home': { x: 0, y: 0.4 },         // Home: pattern down
-            '/technology': { x: 0.5, y: 0 },   // Technology: pattern left (content slides left from right)
-            '/kits': { x: -0.5, y: 0 },        // Kits: pattern right (content slides right from left)
-            '/community': { x: 0, y: -0.4 },   // Community: pattern up (content slides up from bottom)
-            '/about': { x: -0.35, y: 0.25 },   // About: pattern down-right (content from top-left)
-            '/contact': { x: 0.35, y: -0.25 }, // Contact: pattern up-left (content from bottom-right)
+            '/': { x: 0, y: 0.3 },
+            '/home': { x: 0, y: 0.3 },
+            '/technology': { x: 0.4, y: 0 },
+            '/kits': { x: -0.4, y: 0 },
+            '/community': { x: 0, y: -0.3 },
+            '/about': { x: -0.3, y: 0.2 },
+            '/contact': { x: 0.3, y: -0.2 },
+            '/equipment': { x: 0.2, y: 0.25 },
         };
         
         this.init();
         this.setupVisibilityHandling();
         this.setupPageTransitions();
+    }
+    
+    updatePan() {
+        this.panX += (this.targetPanX - this.panX) * this.panSpeed;
+        this.panY += (this.targetPanY - this.panY) * this.panSpeed;
+    }
+    
+    setupPageTransitions() {
+        document.body.addEventListener('htmx:beforeSwap', (e) => {
+            const path = e.detail.pathInfo?.requestPath || e.detail.requestConfig?.path || '';
+            const delta = this.pageDeltas[path] || { x: 0, y: 0 };
+            this.targetPanX = this.panX + delta.x;
+            this.targetPanY = this.panY + delta.y;
+        });
     }
     
     init() {
@@ -71,105 +84,146 @@ class ResonantBackground {
     
     fallbackToCss() {
         this.canvas.remove();
-        document.body.style.background = `
-            radial-gradient(ellipse 800px 400px at 30% 30%, rgba(249, 115, 22, 0.03) 0%, transparent 70%),
-            radial-gradient(ellipse 600px 300px at 70% 70%, rgba(251, 146, 60, 0.02) 0%, transparent 60%),
-            #0a0a0a
-        `;
-        document.body.style.animation = 'cssWaves 20s ease-in-out infinite alternate';
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes cssWaves {
-                0% { background-position: 0% 0%, 100% 100%; }
-                100% { background-position: 50% 50%, 50% 50%; }
-            }
-        `;
-        document.head.appendChild(style);
+        document.body.style.background = '#0a0a0a';
     }
     
     setupWebGL() {
         const vertexShader = this.createShader(this.gl.VERTEX_SHADER, `#version 300 es
             in vec2 a_position;
-            out vec2 v_uv;
             void main() {
-                v_uv = a_position * 0.5 + 0.5;
                 gl_Position = vec4(a_position, 0.0, 1.0);
             }
         `);
         
         const fragmentShader = this.createShader(this.gl.FRAGMENT_SHADER, `#version 300 es
-            precision mediump float;
-            in vec2 v_uv;
+            precision highp float;
             out vec4 fragColor;
             
-            uniform float u_time;
-            uniform vec2 u_resolution;
+            uniform float iTime;
+            uniform vec2 iResolution;
             uniform vec2 u_pan;
             
-            // Colors - very subtle
-            const vec3 bg = vec3(0.039, 0.039, 0.039);
-            const vec3 orange1 = vec3(0.976, 0.451, 0.086);
-            const vec3 orange2 = vec3(0.984, 0.573, 0.235);
-            const vec3 orange3 = vec3(0.992, 0.729, 0.455);
+            const float PI = 3.14159265359;
+            const int MAX_MARCHING_STEPS = 35;
+            const float EPSILON = 0.0001;
             
-            // Radiating ring from a point - sharp and visible
-            float radiatingRing(vec2 uv, vec2 center, float time, float speed, float spacing) {
-                float dist = length(uv - center);
-                // Ring expansion
-                float phase = (dist - time * speed) * spacing;
-                // Sharper rings using pow for more defined edges
-                float wave = pow(sin(phase) * 0.5 + 0.5, 0.5);
-                // Gentler fade to keep rings visible further out
-                float fade = exp(-dist * 0.8);
-                // Ring shape
-                float ring = wave * fade;
-                return ring;
+            vec2 rotate2d(vec2 v, float a) {
+                return vec2(v.x * cos(a) - v.y * sin(a), v.y * cos(a) + v.x * sin(a)); 
             }
             
-            // Multiple concentric rings - sharp and radiating outward
-            float concentricWaves(vec2 uv, vec2 center, float time) {
-                float result = 0.0;
-                // Layer multiple ring frequencies with different speeds
-                result += radiatingRing(uv, center, time, 0.08, 12.0) * 0.5;
-                result += radiatingRing(uv, center, time, 0.06, 8.0) * 0.4;
-                result += radiatingRing(uv, center, time, 0.04, 16.0) * 0.3;
-                return result;
+            void pR(inout vec2 p, float a) {
+                p = cos(a)*p + sin(a)*vec2(p.y, -p.x);
+            }
+            
+            float sdTorus(vec3 p, vec2 t) {
+                vec2 q = vec2(length(p.xz)-t.x, p.y);
+                return length(q)-t.y;
+            }
+            
+            float opTwist(vec3 p, float fftValue, float time) {
+                float c = cos((fftValue*1.5) * p.y);
+                float s = sin((fftValue+0.5) * p.y);
+                mat2 m = mat2(c,-s,s,c);
+                vec3 q = vec3(m * p.xz, p.y);
+                return sdTorus(q, vec2(abs(sin(time*0.1))+0.5*(fftValue*0.2), fftValue*0.0001));
+            }
+            
+            float opRep(vec3 p, vec3 c, float time) {
+                float idx = mod(floor(p.x/c.x), 32.0);
+                float idy = mod(floor(p.y/c.y), 32.0);
+                float idz = mod(floor(p.z/c.z), 32.0);
+                
+                float id = length(vec3(idx, idy, idz));
+                
+                // Simulated FFT value (original uses audio texture)
+                float fftValue = 0.5;
+                
+                vec3 q = mod(p, c) - 0.5 * c;
+                vec3 r = q;
+                
+                float rotationAmount = (id * 5.0) + (time * 2.0);
+                
+                bool xmod2 = mod(idx, 2.0) == 0.0;
+                
+                if (xmod2) {
+                    q.y += 1.5;
+                    r.y -= 1.5;
+                }
+                
+                pR(q.xy, rotationAmount);
+                pR(q.xz, rotationAmount * 0.1);
+                
+                float shape1 = opTwist(q, fftValue, time);
+                
+                if (xmod2) {
+                    pR(r.xy, rotationAmount);
+                    pR(r.xz, rotationAmount * 0.1);
+                    float shape2 = opTwist(r, fftValue, time);
+                    return min(shape1, shape2);
+                } else {
+                    return shape1;
+                }
+            }
+            
+            float sceneSDF(vec3 samplePoint, float time) {
+                return opRep(samplePoint, vec3(3.0, 3.0, 3.0), time);
+            }
+            
+            vec3 castRay(vec3 pos, vec3 dir, float time) {
+                for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
+                    float dist = sceneSDF(pos, time);
+                    if (dist < EPSILON) {
+                        return pos;
+                    }
+                    pos += dist * dir;
+                }    
+                return pos;
+            }
+            
+            float lightPointDiffuse(vec3 pos, vec3 lightPos) {
+                float lightDist = length(lightPos - pos);
+                float color = 3.0 / (lightDist * lightDist);
+                return max(0.0, color);
             }
             
             void main() {
-                vec2 uv = v_uv;
-                vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
-                vec2 uvAspect = (uv - 0.5) * aspect + 0.5;
+                vec2 fragCoord = gl_FragCoord.xy;
                 
-                // Apply pan offset for page transitions
-                vec2 panOffset = u_pan * 0.5;
-                uvAspect += panOffset;
+                vec4 mousePos = vec4(0.5, -0.2, 0.0, 0.0);
                 
-                // Animation speed (doubled)
-                float time = u_time * 0.0006;
+                vec2 screenPos = (fragCoord.xy / iResolution.xy) * 2.0 - 1.0;
                 
-                vec3 color = bg;
+                vec3 cameraPos = vec3(0.0, 0.0, -8.0);
                 
-                // Multiple radiating wave sources - subtle but visible
-                float intensity = 0.07;
+                vec3 cameraDir = vec3(0.0, 0.0, 1.0);
+                vec3 planeU = vec3(2.0, 0.0, 0.0);
+                vec3 planeV = vec3(0.0, iResolution.y / iResolution.x * 2.0, 0.0);
+                vec3 rayDir = normalize(cameraDir + screenPos.x * planeU + screenPos.y * planeV);
                 
-                // Center emanation - strongest (moves with pan)
-                vec2 center = vec2(0.5, 0.5) + panOffset * 0.3;
-                color += concentricWaves(uvAspect, center, time) * orange1 * intensity * 1.1;
+                cameraPos.yz = rotate2d(cameraPos.yz, mousePos.y);
+                rayDir.yz = rotate2d(rayDir.yz, mousePos.y);
                 
-                // Corner emanations - offset timing for variety (move with pan)
-                color += concentricWaves(uvAspect, vec2(0.1, 0.15) + panOffset * 0.2, time + 10.0) * orange2 * intensity * 0.9;
-                color += concentricWaves(uvAspect, vec2(0.9, 0.85) + panOffset * 0.2, time + 20.0) * orange3 * intensity * 0.9;
-                color += concentricWaves(uvAspect, vec2(0.85, 0.2) + panOffset * 0.2, time + 30.0) * orange1 * intensity * 0.7;
-                color += concentricWaves(uvAspect, vec2(0.15, 0.8) + panOffset * 0.2, time + 40.0) * orange2 * intensity * 0.7;
+                cameraPos.xz = rotate2d(cameraPos.xz, mousePos.x + u_pan.x * 0.3);
+                rayDir.xz = rotate2d(rayDir.xz, mousePos.x + u_pan.x * 0.3);
                 
-                // Gentle vignette
-                float vignette = 1.0 - length(uv - 0.5) * 0.2;
-                color *= vignette;
+                cameraPos.zy += iTime;
+                cameraPos.x += u_pan.x * 2.0;
+                cameraPos.y += u_pan.y * 2.0;
                 
-                // Breathing effect
-                color *= 0.8 + 0.2 * sin(time * 0.3);
+                vec3 rayPos = castRay(cameraPos, rayDir, iTime);
+                
+                // base color (orange instead of blue)
+                vec3 color = vec3(0.43, 0.12, 0.01);
+                
+                color += (rayDir*0.02);
+                
+                vec3 lightPos = cameraPos;
+                
+                float lighting = lightPointDiffuse(rayPos, lightPos);
+                lighting = min(lighting, 0.1); // Cap max brightness
+                color *= 2.0 * lighting * 2.0;
+                
+                color = pow(color, vec3(0.5));
                 
                 fragColor = vec4(color, 1.0);
             }
@@ -219,9 +273,10 @@ class ResonantBackground {
     }
     
     resize() {
-        const pixelRatio = Math.min(window.devicePixelRatio, 1.5);
-        const width = window.innerWidth * pixelRatio;
-        const height = window.innerHeight * pixelRatio;
+        // Render at lower resolution for performance, CSS scales up
+        const scale = 0.25; // 25% resolution
+        const width = Math.floor(window.innerWidth * scale);
+        const height = Math.floor(window.innerHeight * scale);
         
         this.canvas.width = width;
         this.canvas.height = height;
@@ -231,7 +286,7 @@ class ResonantBackground {
         if (this.gl) {
             this.gl.viewport(0, 0, width, height);
             
-            const resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
+            const resolutionLocation = this.gl.getUniformLocation(this.program, 'iResolution');
             this.gl.uniform2f(resolutionLocation, width, height);
         }
     }
@@ -242,14 +297,12 @@ class ResonantBackground {
             return;
         }
         
-        // Update pan interpolation
-        this.updatePan();
-        
-        const currentTime = Date.now() - this.startTime;
-        const timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
+        const currentTime = ((Date.now() - this.startTime) / 1000.0 + 300.0) * 0.015; // Start 300s ahead
+        const timeLocation = this.gl.getUniformLocation(this.program, 'iTime');
         this.gl.uniform1f(timeLocation, currentTime);
         
-        // Update pan uniform
+        // Update pan
+        this.updatePan();
         const panLocation = this.gl.getUniformLocation(this.program, 'u_pan');
         this.gl.uniform2f(panLocation, this.panX, this.panY);
         
@@ -262,24 +315,6 @@ class ResonantBackground {
         document.addEventListener('visibilitychange', () => {
             this.isVisible = !document.hidden;
         });
-    }
-    
-    setupPageTransitions() {
-        // Listen for HTMX content swap (when page actually transitions)
-        document.body.addEventListener('htmx:beforeSwap', (e) => {
-            const path = e.detail.pathInfo?.requestPath || e.detail.requestConfig?.path || '';
-            const delta = this.pageDeltas[path] || { x: 0, y: 0 };
-            
-            // Add delta to current position (consistent movement amount)
-            this.targetPanX = this.panX + delta.x;
-            this.targetPanY = this.panY + delta.y;
-        });
-    }
-    
-    updatePan() {
-        // Smooth interpolation toward target
-        this.panX += (this.targetPanX - this.panX) * this.panSpeed;
-        this.panY += (this.targetPanY - this.panY) * this.panSpeed;
     }
     
     destroy() {
