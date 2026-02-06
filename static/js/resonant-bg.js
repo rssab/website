@@ -1,6 +1,6 @@
 /**
  * Resonant Background Shader
- * WebGL2 animated background with sound wave patterns
+ * WebGL2 animated background with slow, subtle radiating wave patterns
  */
 
 class ResonantBackground {
@@ -17,7 +17,6 @@ class ResonantBackground {
     }
     
     init() {
-        // Create canvas
         this.canvas = document.createElement('canvas');
         this.canvas.style.cssText = `
             position: fixed;
@@ -30,13 +29,12 @@ class ResonantBackground {
         `;
         document.body.appendChild(this.canvas);
         
-        // Try WebGL2
         this.gl = this.canvas.getContext('webgl2', {
             alpha: true,
             antialias: false,
             depth: false,
             stencil: false,
-            powerPreference: 'low-power'
+            powerPreference: 'low-power',
         });
         
         if (!this.gl) {
@@ -52,20 +50,19 @@ class ResonantBackground {
     }
     
     fallbackToCss() {
-        // CSS gradient fallback
         this.canvas.remove();
         document.body.style.background = `
-            radial-gradient(ellipse 600px 300px at 25% 25%, rgba(249, 115, 22, 0.05) 0%, transparent 60%),
-            radial-gradient(ellipse 400px 200px at 75% 75%, rgba(251, 146, 60, 0.03) 0%, transparent 50%),
+            radial-gradient(ellipse 800px 400px at 30% 30%, rgba(249, 115, 22, 0.03) 0%, transparent 70%),
+            radial-gradient(ellipse 600px 300px at 70% 70%, rgba(251, 146, 60, 0.02) 0%, transparent 60%),
             #0a0a0a
         `;
-        document.body.style.animation = 'cssWaves 8s ease-in-out infinite alternate';
+        document.body.style.animation = 'cssWaves 20s ease-in-out infinite alternate';
         
         const style = document.createElement('style');
         style.textContent = `
             @keyframes cssWaves {
                 0% { background-position: 0% 0%, 100% 100%; }
-                100% { background-position: 100% 100%, 0% 0%; }
+                100% { background-position: 50% 50%, 50% 50%; }
             }
         `;
         document.head.appendChild(style);
@@ -89,53 +86,62 @@ class ResonantBackground {
             uniform float u_time;
             uniform vec2 u_resolution;
             
-            // Colors
-            const vec3 bg = vec3(0.039, 0.039, 0.039); // #0a0a0a
-            const vec3 orange1 = vec3(0.976, 0.451, 0.086); // #f97316
-            const vec3 orange2 = vec3(0.984, 0.573, 0.235); // #fb923c
-            const vec3 orange3 = vec3(0.992, 0.729, 0.455); // #fdba74
+            // Colors - very subtle
+            const vec3 bg = vec3(0.039, 0.039, 0.039);
+            const vec3 orange1 = vec3(0.976, 0.451, 0.086);
+            const vec3 orange2 = vec3(0.984, 0.573, 0.235);
+            const vec3 orange3 = vec3(0.992, 0.729, 0.455);
             
-            float sdCircle(vec2 p, float r) {
-                return length(p) - r;
-            }
-            
-            float resonanceRing(vec2 uv, vec2 center, float time) {
+            // Slow radiating ring from a point
+            float radiatingRing(vec2 uv, vec2 center, float time, float speed, float spacing) {
                 float dist = length(uv - center);
-                float wave = sin(dist * 15.0 - time * 2.0) * 0.5 + 0.5;
-                float ring = 1.0 - smoothstep(0.0, 0.1, abs(dist - 0.3 - sin(time) * 0.1));
-                return wave * ring * 0.3;
+                // Very slow expansion
+                float wave = sin((dist - time * speed) * spacing) * 0.5 + 0.5;
+                // Fade out with distance
+                float fade = exp(-dist * 1.5);
+                // Soft ring shape
+                float ring = wave * fade;
+                return ring;
             }
             
-            float waveform(vec2 uv, float time) {
-                float y = sin(uv.x * 10.0 + time) * 0.1 + 
-                         sin(uv.x * 20.0 + time * 1.5) * 0.05 +
-                         sin(uv.x * 5.0 + time * 0.8) * 0.03;
-                float line = 1.0 - smoothstep(0.0, 0.02, abs(uv.y - 0.5 - y));
-                return line * 0.2;
+            // Multiple concentric rings
+            float concentricWaves(vec2 uv, vec2 center, float time) {
+                float result = 0.0;
+                // Layer multiple ring frequencies - all very slow
+                result += radiatingRing(uv, center, time, 0.02, 8.0) * 0.4;
+                result += radiatingRing(uv, center, time, 0.015, 12.0) * 0.3;
+                result += radiatingRing(uv, center, time, 0.01, 16.0) * 0.2;
+                return result;
             }
             
             void main() {
                 vec2 uv = v_uv;
-                vec2 center = uv - 0.5;
-                float time = u_time * 0.001;
+                vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
+                vec2 uvAspect = (uv - 0.5) * aspect + 0.5;
+                
+                // Very slow time
+                float time = u_time * 0.0003;
                 
                 vec3 color = bg;
                 
-                // Resonance rings
-                color += resonanceRing(uv, vec2(0.3, 0.7), time) * orange1;
-                color += resonanceRing(uv, vec2(0.8, 0.3), time + 2.0) * orange2;
-                color += resonanceRing(uv, vec2(0.2, 0.2), time + 4.0) * orange3;
+                // Multiple radiating wave sources - very subtle intensity
+                float intensity = 0.006;
                 
-                // Waveforms
-                color += waveform(vec2(uv.x, uv.y + 0.3), time) * orange2;
-                color += waveform(vec2(uv.x, uv.y - 0.2), time + 1.5) * orange3;
+                // Center emanation
+                color += concentricWaves(uvAspect, vec2(0.5, 0.5), time) * orange1 * intensity;
                 
-                // Vignette
-                float vignette = smoothstep(1.2, 0.3, length(center));
+                // Corner emanations - offset timing for variety
+                color += concentricWaves(uvAspect, vec2(0.15, 0.2), time + 10.0) * orange2 * intensity * 0.7;
+                color += concentricWaves(uvAspect, vec2(0.85, 0.8), time + 20.0) * orange3 * intensity * 0.7;
+                color += concentricWaves(uvAspect, vec2(0.8, 0.25), time + 30.0) * orange1 * intensity * 0.5;
+                color += concentricWaves(uvAspect, vec2(0.2, 0.75), time + 40.0) * orange2 * intensity * 0.5;
+                
+                // Very subtle vignette
+                float vignette = 1.0 - length(uv - 0.5) * 0.3;
                 color *= vignette;
                 
-                // Subtle overall animation
-                color *= 0.7 + 0.3 * sin(time * 0.5);
+                // Subtle breathing - very slow
+                color *= 0.9 + 0.1 * sin(time * 0.5);
                 
                 fragColor = vec4(color, 1.0);
             }
@@ -143,7 +149,6 @@ class ResonantBackground {
         
         this.program = this.createProgram(vertexShader, fragmentShader);
         
-        // Create fullscreen quad
         const positions = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
         const buffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
@@ -234,7 +239,6 @@ class ResonantBackground {
     }
 }
 
-// Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         new ResonantBackground();

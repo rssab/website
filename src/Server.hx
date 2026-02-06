@@ -40,6 +40,9 @@ class Server {
         loadTemplate('mission', 'templates/pages/mission.html');
         loadTemplate('about', 'templates/pages/about.html');
         loadTemplate('equipment', 'templates/pages/equipment.html');
+        loadTemplate('technology', 'templates/pages/technology.html');
+        loadTemplate('kits', 'templates/pages/kits.html');
+        loadTemplate('community', 'templates/pages/community.html');
         loadTemplate('finances', 'templates/pages/finances.html');
         loadTemplate('contact', 'templates/pages/contact.html');
         
@@ -60,11 +63,14 @@ class Server {
         return if (path.startsWith('/static/')) {
             serveStaticFile(path);
         } else {
-            switch (path) {
+            switch path {
                 case '/', '/home': renderPage('Home', 'home', {}, isHtmx);
                 case '/mission': renderPage('Mission', 'mission', {}, isHtmx);
                 case '/about': renderPage('About', 'about', {}, isHtmx);
                 case '/equipment': renderPage('Equipment', 'equipment', {}, isHtmx);
+                case '/technology': renderPage('Technology', 'technology', {}, isHtmx);
+                case '/kits': renderPage('Kits', 'kits', {}, isHtmx);
+                case '/community': renderPage('Community', 'community', {}, isHtmx);
                 case '/finances': renderPage('Finances', 'finances', {}, isHtmx);
                 case '/contact': renderPage('Contact', 'contact', {}, isHtmx);
                 case '/subscribe': handleSubscribe(req);
