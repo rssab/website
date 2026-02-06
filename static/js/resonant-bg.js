@@ -92,25 +92,27 @@ class ResonantBackground {
             const vec3 orange2 = vec3(0.984, 0.573, 0.235);
             const vec3 orange3 = vec3(0.992, 0.729, 0.455);
             
-            // Slow radiating ring from a point
+            // Radiating ring from a point - sharp and visible
             float radiatingRing(vec2 uv, vec2 center, float time, float speed, float spacing) {
                 float dist = length(uv - center);
-                // Very slow expansion
-                float wave = sin((dist - time * speed) * spacing) * 0.5 + 0.5;
-                // Fade out with distance
-                float fade = exp(-dist * 1.5);
-                // Soft ring shape
+                // Ring expansion
+                float phase = (dist - time * speed) * spacing;
+                // Sharper rings using pow for more defined edges
+                float wave = pow(sin(phase) * 0.5 + 0.5, 0.5);
+                // Gentler fade to keep rings visible further out
+                float fade = exp(-dist * 0.8);
+                // Ring shape
                 float ring = wave * fade;
                 return ring;
             }
             
-            // Multiple concentric rings
+            // Multiple concentric rings - sharp and radiating outward
             float concentricWaves(vec2 uv, vec2 center, float time) {
                 float result = 0.0;
-                // Layer multiple ring frequencies - slow but visible
-                result += radiatingRing(uv, center, time, 0.025, 6.0) * 0.5;
-                result += radiatingRing(uv, center, time, 0.018, 10.0) * 0.4;
-                result += radiatingRing(uv, center, time, 0.012, 14.0) * 0.3;
+                // Layer multiple ring frequencies with different speeds
+                result += radiatingRing(uv, center, time, 0.08, 12.0) * 0.5;
+                result += radiatingRing(uv, center, time, 0.06, 8.0) * 0.4;
+                result += radiatingRing(uv, center, time, 0.04, 16.0) * 0.3;
                 return result;
             }
             
@@ -119,8 +121,8 @@ class ResonantBackground {
                 vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
                 vec2 uvAspect = (uv - 0.5) * aspect + 0.5;
                 
-                // Very slow time
-                float time = u_time * 0.0003;
+                // Animation speed (doubled)
+                float time = u_time * 0.0006;
                 
                 vec3 color = bg;
                 
