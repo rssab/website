@@ -19,6 +19,10 @@ class ResonantBackground {
         this.targetPanY = 0;
         this.panSpeed = 0.04;
         
+        // Scroll-based camera movement
+        this.scrollY = 0;
+        this.scrollInfluence = 0.0008; // How much scroll affects camera
+        
         this.pageDeltas = {
             '/': { x: 0, y: 0.3 },
             '/home': { x: 0, y: 0.3 },
@@ -33,6 +37,13 @@ class ResonantBackground {
         this.init();
         this.setupVisibilityHandling();
         this.setupPageTransitions();
+        this.setupScrollTracking();
+    }
+    
+    setupScrollTracking() {
+        window.addEventListener('scroll', () => {
+            this.scrollY = window.scrollY;
+        }, { passive: true });
     }
     
     updatePan() {
@@ -301,10 +312,11 @@ class ResonantBackground {
         const timeLocation = this.gl.getUniformLocation(this.program, 'iTime');
         this.gl.uniform1f(timeLocation, currentTime);
         
-        // Update pan
+        // Update pan with scroll influence
         this.updatePan();
+        const scrollPanY = this.scrollY * this.scrollInfluence;
         const panLocation = this.gl.getUniformLocation(this.program, 'u_pan');
-        this.gl.uniform2f(panLocation, this.panX, this.panY);
+        this.gl.uniform2f(panLocation, this.panX, this.panY - scrollPanY);
         
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
         
