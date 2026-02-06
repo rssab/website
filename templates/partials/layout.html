@@ -72,6 +72,39 @@
         .fade-in { animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* Directional slide animations */
+        .slide-from-right { animation: slideFromRight 0.5s ease-out; }
+        .slide-from-left { animation: slideFromLeft 0.5s ease-out; }
+        .slide-from-top { animation: slideFromTop 0.5s ease-out; }
+        .slide-from-bottom { animation: slideFromBottom 0.5s ease-out; }
+        .slide-from-top-left { animation: slideFromTopLeft 0.5s ease-out; }
+        .slide-from-bottom-right { animation: slideFromBottomRight 0.5s ease-out; }
+        
+        @keyframes slideFromRight {
+            from { opacity: 0; transform: translateX(60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideFromLeft {
+            from { opacity: 0; transform: translateX(-60px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideFromTop {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideFromBottom {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideFromTopLeft {
+            from { opacity: 0; transform: translate(-40px, -30px); }
+            to { opacity: 1; transform: translate(0, 0); }
+        }
+        @keyframes slideFromBottomRight {
+            from { opacity: 0; transform: translate(40px, 30px); }
+            to { opacity: 1; transform: translate(0, 0); }
+        }
+        
         .gradient-text {
             background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
             -webkit-background-clip: text;
@@ -202,9 +235,44 @@
             loadingBar.classList.remove('htmx-request');
         });
         
+        // Direction to animation class mapping
+        const directionAnimations = {
+            'right': 'slide-from-right',
+            'left': 'slide-from-left',
+            'top': 'slide-from-top',
+            'bottom': 'slide-from-bottom',
+            'top-left': 'slide-from-top-left',
+            'bottom-right': 'slide-from-bottom-right',
+        };
+        
+        // Page to direction mapping
+        const pageDirections = {
+            '/': 'top',
+            '/home': 'top',
+            '/technology': 'right',
+            '/kits': 'left',
+            '/community': 'bottom',
+            '/about': 'top-left',
+            '/contact': 'bottom-right',
+        };
+        
+        let currentDirection = 'top';
+        
+        // Track which page we're going to
+        document.body.addEventListener('htmx:beforeRequest', function(e) {
+            const path = e.detail.pathInfo?.requestPath || '';
+            currentDirection = pageDirections[path] || 'top';
+        });
+        
         // Handle content swap
         document.body.addEventListener('htmx:afterSwap', function(e) {
-            e.detail.elt.classList.add('fade-in');
+            // Remove any existing slide classes
+            e.detail.elt.classList.remove('fade-in', 'slide-from-right', 'slide-from-left', 
+                'slide-from-top', 'slide-from-bottom', 'slide-from-top-left', 'slide-from-bottom-right');
+            
+            // Add directional animation
+            const animClass = directionAnimations[currentDirection] || 'fade-in';
+            e.detail.elt.classList.add(animClass);
             
             // Reset and restart staggered animations
             const staggerElements = e.detail.elt.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');

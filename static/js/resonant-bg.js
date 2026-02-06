@@ -269,12 +269,12 @@ class ResonantBackground {
             const path = e.detail.pathInfo?.requestPath || e.detail.path || '';
             const direction = this.pageDirections[path] || { x: 0, y: 0 };
             
-            // Immediately jump to starting position (where content comes FROM)
-            this.panX = direction.x;
-            this.panY = direction.y;
-            // Target is center - will smoothly animate there
-            this.targetPanX = 0;
-            this.targetPanY = 0;
+            // Set target to new position - waves drift in that direction
+            this.targetPanX = direction.x;
+            this.targetPanY = direction.y;
+            
+            // Store direction for content animation
+            window.currentPageDirection = direction;
         });
     }
     
