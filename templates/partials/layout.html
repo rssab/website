@@ -326,20 +326,10 @@
             // Add directional animation
             const animClass = directionAnimations[currentDirection] || 'fade-in';
             e.detail.elt.classList.add(animClass);
-            console.log('Animating with:', animClass, 'direction:', currentDirection);
             
-            // Reset and restart staggered animations
+            // Re-observe new stagger elements (let CSS handle animation restart naturally)
             const staggerElements = e.detail.elt.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');
-            staggerElements.forEach((el) => {
-                el.style.animation = 'none';
-                el.offsetHeight; // Trigger reflow
-                el.style.animation = null;
-            });
-            
-            // Re-observe new stagger elements
-            staggerElements.forEach((el) => {
-                observer.observe(el);
-            });
+            staggerElements.forEach((el) => observer.observe(el));
         });
         
         // Handle request errors
