@@ -5,7 +5,9 @@
                class="text-xl font-bold tracking-tight">
                 <span class="gradient-text">Resonant</span><span class="text-gray-100">Systems</span>
             </a>
-            <div class="flex items-center gap-1 sm:gap-4">
+            
+            <!-- Desktop nav -->
+            <div class="hidden md:flex items-center gap-4">
                 <a href="/technology" 
                     hx-get="/technology" 
                     hx-target="#main-content" 
@@ -47,6 +49,82 @@
                     Join Waitlist
                 </a>
             </div>
+            
+            <!-- Mobile hamburger -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-400 hover:text-white" aria-label="Menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2">
+            <div class="flex flex-col gap-2">
+                <a href="/technology" 
+                    hx-get="/technology" 
+                    hx-target="#main-content" 
+                    hx-push-url="true" 
+                    hx-swap="innerHTML"
+                    class="mobile-nav-link px-3 py-3 text-gray-400 hover:text-accent-400 hover:bg-dark-800 rounded-lg">
+                    Technology
+                </a>
+                <a href="/kits" 
+                    hx-get="/kits" 
+                    hx-target="#main-content" 
+                    hx-push-url="true" 
+                    hx-swap="innerHTML"
+                    class="mobile-nav-link px-3 py-3 text-gray-400 hover:text-accent-400 hover:bg-dark-800 rounded-lg">
+                    Kits
+                </a>
+                <a href="/community" 
+                    hx-get="/community" 
+                    hx-target="#main-content" 
+                    hx-push-url="true" 
+                    hx-swap="innerHTML"
+                    class="mobile-nav-link px-3 py-3 text-gray-400 hover:text-accent-400 hover:bg-dark-800 rounded-lg">
+                    Community
+                </a>
+                <a href="/about" 
+                    hx-get="/about" 
+                    hx-target="#main-content" 
+                    hx-push-url="true" 
+                    hx-swap="innerHTML"
+                    class="mobile-nav-link px-3 py-3 text-gray-400 hover:text-accent-400 hover:bg-dark-800 rounded-lg">
+                    About
+                </a>
+                <a href="/contact" 
+                    hx-get="/contact" 
+                    hx-target="#main-content" 
+                    hx-push-url="true" 
+                    hx-swap="innerHTML"
+                    class="mt-2 btn-primary px-4 py-3 text-center font-medium bg-accent-600 hover:bg-accent-500 text-white rounded-lg">
+                    Join Waitlist
+                </a>
+            </div>
         </div>
     </nav>
 </header>
+
+<script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = !mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        // Toggle icon between hamburger and X
+        menuIcon.setAttribute('d', isOpen 
+            ? 'M4 6h16M4 12h16M4 18h16' 
+            : 'M6 18L18 6M6 6l12 12');
+    });
+    
+    // Close menu when clicking a link
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        });
+    });
+</script>
