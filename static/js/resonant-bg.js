@@ -20,15 +20,15 @@ class ResonantBackground {
         this.panSpeed = 0.04;
         
         // Movement delta for each page (how much to move, not where to go)
-        // Positive x = waves move right, Positive y = waves move down
+        // Positive x = pattern shifts LEFT, Positive y = pattern shifts DOWN
         this.pageDeltas = {
-            '/': { x: 0, y: 0.4 },             // Home: waves move down (content from top)
-            '/home': { x: 0, y: 0.4 },         // Home: waves move down
-            '/technology': { x: -0.5, y: 0 },  // Technology: waves move left (content from right)
-            '/kits': { x: 0.5, y: 0 },         // Kits: waves move right (content from left)
-            '/community': { x: 0, y: -0.4 },   // Community: waves move up (content from bottom)
-            '/about': { x: 0.35, y: 0.25 },    // About: waves move down-right (content from top-left)
-            '/contact': { x: -0.35, y: -0.25 },// Contact: waves move up-left (content from bottom-right)
+            '/': { x: 0, y: 0.4 },             // Home: pattern down (content slides down from top)
+            '/home': { x: 0, y: 0.4 },         // Home: pattern down
+            '/technology': { x: 0.5, y: 0 },   // Technology: pattern left (content slides left from right)
+            '/kits': { x: -0.5, y: 0 },        // Kits: pattern right (content slides right from left)
+            '/community': { x: 0, y: -0.4 },   // Community: pattern up (content slides up from bottom)
+            '/about': { x: -0.35, y: 0.25 },   // About: pattern down-right (content from top-left)
+            '/contact': { x: 0.35, y: -0.25 }, // Contact: pattern up-left (content from bottom-right)
         };
         
         this.init();
