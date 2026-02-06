@@ -21,7 +21,7 @@ class Server {
         
         Bun.serve({
             port: port,
-            fetch: handleRequest
+            fetch: handleRequest,
         });
         
         trace('🚀 Server running at http://localhost:$port');
@@ -47,7 +47,7 @@ class Server {
     }
     
     static function loadTemplate(name:String, path:String):Void {
-        final content = Fs.readFileSync(path, {encoding: 'utf8'});
+        final content = Fs.readFileSync(path, {encoding: 'utf8',});
         rawTemplates.set(name, content);
         templates.set(name, new Template(content));
     }
@@ -82,7 +82,7 @@ class Server {
             final content = template.execute(data);
             final html = if (isHtmx) content else fullPage(title, content);
             new Response(html, {
-                headers: createHeaders('text/html; charset=utf-8')
+                headers: createHeaders('text/html; charset=utf-8'),
             });
         };
     }
@@ -116,7 +116,7 @@ class Server {
         final template = templates.get('subscribe-success');
         final html = if (template == null) 'Success!' else template.execute({});
         return new Response(html, {
-            headers: createHeaders('text/html; charset=utf-8')
+            headers: createHeaders('text/html; charset=utf-8'),
         });
     }
     
@@ -134,12 +134,12 @@ class Server {
             }
             
             return new Response(content, {
-                headers: createHeaders(contentType)
+                headers: createHeaders(contentType),
             });
         } catch (e:Dynamic) {
             return new Response('File not found', {
                 status: 404,
-                headers: createHeaders('text/plain; charset=utf-8')
+                headers: createHeaders('text/plain; charset=utf-8'),
             });
         }
     }
@@ -155,7 +155,7 @@ class Server {
         
         return new Response(html, {
             status: 404,
-            headers: createHeaders('text/html; charset=utf-8')
+            headers: createHeaders('text/html; charset=utf-8'),
         });
     }
 }
@@ -168,5 +168,5 @@ extern class Bun {
 
 typedef BunServeOptions = {
     port:Int,
-    fetch:Request->EitherType<Response, js.lib.Promise<Response>>
+    fetch:Request->EitherType<Response, js.lib.Promise<Response>>,
 };

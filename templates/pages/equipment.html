@@ -1,99 +1,147 @@
-<div class="space-y-8">
-    <header class="text-center py-8">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary-500 to-primary-700 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent">
-            ⚙️ Equipment & Tools
+<section class="container mx-auto px-4 py-16 max-w-6xl">
+    <div class="max-w-3xl mx-auto">
+        <p class="stagger-1 text-accent-500 font-medium mb-4 tracking-wide uppercase text-sm">The Science</p>
+        <h1 class="stagger-2 text-4xl md:text-5xl font-bold mb-6">
+            How <span class="gradient-text">DML</span> Works
         </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            The tools, libraries, and infrastructure powering our stack.
+        <p class="stagger-3 text-xl text-gray-400 mb-12">
+            Distributed Mode Loudspeakers produce sound in a fundamentally different way 
+            than conventional speakers — and that difference changes everything.
         </p>
-    </header>
-    
-    <section class="grid md:grid-cols-2 gap-6">
-        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2">
-                <span>🔶</span> Haxe Ecosystem
-            </h2>
-            <ul class="space-y-3">
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">hxnodejs</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Node.js externs for Haxe</span>
-                </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">thx.core</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Functional programming utilities</span>
-                </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">HxBun</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Bun runtime bindings for Haxe</span>
-                </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">tink_web</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Macro-powered web routing</span>
-                </li>
-            </ul>
+    </div>
+</section>
+
+<section class="container mx-auto px-4 pb-16 max-w-6xl">
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div class="stagger-1">
+            <h2 class="text-2xl font-bold mb-6">Traditional vs. Distributed</h2>
+            <div class="space-y-6 text-gray-400">
+                <p>
+                    <strong class="text-gray-200">Conventional speakers</strong> use a cone 
+                    that moves like a piston, pushing air from a single point source. 
+                    This creates precise imaging in one spot — but move away from 
+                    the sweet spot and the magic disappears.
+                </p>
+                <p>
+                    <strong class="text-gray-200">DML panels</strong> vibrate across their 
+                    entire surface in complex patterns. Each frequency radiates from 
+                    multiple points simultaneously, creating a diffuse sound field that 
+                    maintains clarity throughout the space.
+                </p>
+                <p>
+                    The result? Sound that feels immersive and natural everywhere, 
+                    not just in one perfect position.
+                </p>
+            </div>
         </div>
         
-        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
-            <h2 class="text-xl font-bold mb-4 text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                <span>🌐</span> Frontend Stack
-            </h2>
-            <ul class="space-y-3">
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">HTMX</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">High-power tools for HTML</span>
+        <div class="stagger-2 card-glow bg-dark-800 border border-gray-800 rounded-xl p-8">
+            <h3 class="text-xl font-semibold mb-6 text-accent-400">Key Characteristics</h3>
+            <ul class="space-y-4">
+                <li class="flex gap-4">
+                    <span class="text-accent-500 mt-1">→</span>
+                    <div>
+                        <strong class="text-gray-200">Multi-point radiation</strong>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Acts like a line array — sounds closer than it is
+                        </p>
+                    </div>
                 </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">Tailwind CSS</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Utility-first CSS framework</span>
+                <li class="flex gap-4">
+                    <span class="text-accent-500 mt-1">→</span>
+                    <div>
+                        <strong class="text-gray-200">Phase-tolerant</strong>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Reflections and timing differences don't cause comb filtering
+                        </p>
+                    </div>
                 </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">Alpine.js</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Lightweight reactivity (optional)</span>
+                <li class="flex gap-4">
+                    <span class="text-accent-500 mt-1">→</span>
+                    <div>
+                        <strong class="text-gray-200">Bipolar dispersion</strong>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Wide, even coverage without the beam of a horn
+                        </p>
+                    </div>
                 </li>
-                <li class="flex items-start gap-3 p-3 bg-gray-50 dark:bg-dark-900 rounded-lg">
-                    <span class="text-primary-500 font-mono text-sm">Hyperscript</span>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm">Event-driven scripting</span>
+                <li class="flex gap-4">
+                    <span class="text-accent-500 mt-1">→</span>
+                    <div>
+                        <strong class="text-gray-200">Clear transients</strong>
+                        <p class="text-gray-500 text-sm mt-1">
+                            Despite diffuse field, attack and imaging stay defined
+                        </p>
+                    </div>
                 </li>
             </ul>
         </div>
-    </section>
-    
-    <section class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg">
-        <h2 class="text-xl font-bold mb-4 text-green-600 dark:text-green-400 flex items-center gap-2">
-            <span>🖥️</span> Infrastructure
-        </h2>
-        <div class="grid md:grid-cols-3 gap-4">
-            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
-                <div class="text-3xl mb-2">🥟</div>
-                <h4 class="font-semibold mb-1">Bun Runtime</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">All-in-one JavaScript runtime</p>
+    </div>
+</section>
+
+<section class="bg-dark-950/50 border-y border-gray-800">
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+        <h2 class="text-2xl font-bold mb-8 text-center">Why it matters for live sound</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="stagger-1 text-center card-glow bg-dark-800/50 p-6 rounded-lg group">
+                <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🎧</div>
+                <h3 class="text-lg font-semibold mb-2">Headphone-like clarity</h3>
+                <p class="text-gray-500 text-sm">
+                    The immersive, detailed sound of great headphones — 
+                    but for an entire dance floor.
+                </p>
             </div>
-            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
-                <div class="text-3xl mb-2">🐳</div>
-                <h4 class="font-semibold mb-1">Docker</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">Containerized deployments</p>
+            <div class="stagger-2 text-center card-glow bg-dark-800/50 p-6 rounded-lg group">
+                <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">🗣️</div>
+                <h3 class="text-lg font-semibold mb-2">Conversation-friendly</h3>
+                <p class="text-gray-500 text-sm">
+                    High SPL without the harshness. You can actually talk 
+                    to someone even when it's loud.
+                </p>
             </div>
-            <div class="p-4 bg-gray-50 dark:bg-dark-900 rounded-lg text-center">
-                <div class="text-3xl mb-2">☁️</div>
-                <h4 class="font-semibold mb-1">Hetzner Cloud</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400">European cloud hosting</p>
+            <div class="stagger-3 text-center card-glow bg-dark-800/50 p-6 rounded-lg group">
+                <div class="text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">⏱️</div>
+                <h3 class="text-lg font-semibold mb-2">All-night listening</h3>
+                <p class="text-gray-500 text-sm">
+                    Low distortion means low fatigue. Dance for hours 
+                    without your ears giving up.
+                </p>
             </div>
         </div>
-    </section>
-    
-    <section class="bg-gradient-to-br from-purple-500/10 to-purple-700/10 rounded-2xl p-8">
-        <h2 class="text-2xl font-bold mb-4 text-center">Development Setup</h2>
-        <div class="bg-dark-900 rounded-xl p-4 font-mono text-sm text-green-400 overflow-x-auto">
-            <pre># Install Bun
-curl -fsSL https://bun.sh/install | bash
+    </div>
+</section>
 
-# Install Haxe
-haxelib install hxnodejs
-haxelib install thx.core
-
-# Build and run
-haxe build.hxml
-bun run bin/server.js</pre>
+<section class="container mx-auto px-4 py-16 max-w-6xl">
+    <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold mb-6">Our implementation</h2>
+        <div class="space-y-6 text-gray-400">
+            <p>
+                Resonant Systems panels use <strong class="text-gray-200">graphite-enhanced 
+                EPS</strong> (expanded polystyrene) treated with hide glue and shellac. 
+                This creates a rigid, lightweight panel with excellent acoustic properties.
+            </p>
+            <p>
+                The panels are excited by high-quality drivers mounted on 
+                <strong class="text-gray-200">3D-printed frames</strong>, allowing for 
+                precise positioning and modular assembly. The design covers 100Hz–20kHz 
+                without crossovers.
+            </p>
+            <p>
+                For extended low-end, we're developing matching 
+                <strong class="text-gray-200">printed subwoofers</strong> using gypsum 
+                and PVA-filled enclosures.
+            </p>
         </div>
-    </section>
-</div>
+        
+        <div class="stagger-2 mt-12 flex gap-4">
+            <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+               class="btn-primary px-6 py-3 bg-accent-600 hover:bg-accent-500 text-white font-semibold rounded-lg">
+                Join Waitlist →
+            </a>
+            <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+               class="btn-secondary px-6 py-3 border border-gray-700 hover:border-accent-600 text-gray-300 hover:text-white rounded-lg">
+                Ask a Question
+            </a>
+        </div>
+    </div>
+</section>

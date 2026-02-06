@@ -1,78 +1,101 @@
-<div class="space-y-8">
-    <header class="text-center py-8">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary-500 to-primary-700 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent">
-            👤 About Us
+<section class="container mx-auto px-4 py-16 max-w-6xl">
+    <div class="max-w-3xl mx-auto">
+        <p class="stagger-1 text-accent-500 font-medium mb-4 tracking-wide uppercase text-sm">Our Story</p>
+        <h1 class="stagger-2 text-4xl md:text-5xl font-bold mb-6">
+            About <span class="gradient-text">Resonant Systems</span>
         </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Meet the team behind HxHTMX and learn about our journey.
-        </p>
-    </header>
-    
-    <section class="bg-white dark:bg-dark-800 rounded-2xl p-8 shadow-lg">
-        <h2 class="text-2xl font-bold mb-6 text-primary-600 dark:text-primary-400">Our Story</h2>
-        <div class="space-y-4 text-gray-700 dark:text-gray-300">
-            <p>
-                HxHTMX was born out of frustration with the modern JavaScript ecosystem. After spending countless 
-                hours debugging build tools and chasing framework migrations, we decided there had to be a better way.
+    </div>
+</section>
+
+<section class="container mx-auto px-4 pb-16 max-w-6xl">
+    <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-2 space-y-6 text-gray-400">
+            <p class="text-xl text-gray-300">
+                It started with a prototype and a party.
             </p>
             <p>
-                We discovered Haxe—a mature, battle-tested language that compiles to JavaScript (and many other targets). 
-                Combined with HTMX's refreshingly simple approach to building interactive UIs, and Bun's incredible 
-                performance, we found our perfect stack.
+                What began as curiosity about distributed mode loudspeakers turned 
+                into something unexpected. After building a few prototypes and testing 
+                them at underground parties, the feedback was overwhelming.
             </p>
             <p>
-                Today, we're building tools and sharing knowledge to help other developers escape the complexity trap 
-                and rediscover the joy of web development.
+                Sound engineers who'd worked hundreds of festivals said it was the 
+                best they'd ever heard. People who always needed earplugs were 
+                dancing for hours without fatigue. Conversations were happening 
+                next to the speakers — at volume.
+            </p>
+            <p>
+                The technology isn't new. DML has been around for decades. But it's 
+                been stuck in niche applications, held back by patents and proprietary 
+                implementations that never quite delivered on the promise.
+            </p>
+            <p class="text-gray-300">
+                We think it's time to change that.
+            </p>
+            <p>
+                Resonant Systems is building open, accessible DML speaker systems 
+                designed for the DIY community. No patents, no gatekeeping. Just 
+                great sound technology that anyone can build.
             </p>
         </div>
-    </section>
-    
-    <section class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg text-center">
-            <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-4xl">
-                🧑‍💻
+        
+        <div class="space-y-6">
+            <div class="stagger-1 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6">
+                <h3 class="font-semibold mb-3 text-accent-400">Company</h3>
+                <p class="text-gray-400 text-sm">
+                    Resonant Systems Sweden AB<br>
+                    Swedish Aktiebolag
+                </p>
             </div>
-            <h3 class="text-xl font-bold mb-2">Alex Chen</h3>
-            <p class="text-primary-600 dark:text-primary-400 text-sm mb-2">Founder & Lead Developer</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">15 years of web development experience. Former React advocate turned HTMX evangelist.</p>
-        </div>
-        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg text-center">
-            <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-4xl">
-                🎨
+            <div class="stagger-2 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6">
+                <h3 class="font-semibold mb-3 text-accent-400">Status</h3>
+                <p class="text-gray-400 text-sm">
+                    Prototyping and development<br>
+                    DIY kits expected late 2026
+                </p>
             </div>
-            <h3 class="text-xl font-bold mb-2">Maya Johnson</h3>
-            <p class="text-green-600 dark:text-green-400 text-sm mb-2">UX Designer</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">Passionate about accessible design and believes great UX doesn't require client-side frameworks.</p>
-        </div>
-        <div class="bg-white dark:bg-dark-800 rounded-2xl p-6 shadow-lg text-center">
-            <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-4xl">
-                ⚙️
-            </div>
-            <h3 class="text-xl font-bold mb-2">Sam Rivera</h3>
-            <p class="text-purple-600 dark:text-purple-400 text-sm mb-2">DevOps Engineer</p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm">Infrastructure wizard. Keeps our servers running at maximum efficiency with minimal resources.</p>
-        </div>
-    </section>
-    
-    <section class="bg-gradient-to-r from-primary-500/20 to-primary-700/20 rounded-2xl p-8">
-        <h2 class="text-2xl font-bold mb-4 text-center">Our Tech Stack</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div class="p-4 bg-white/50 dark:bg-dark-800/50 rounded-xl">
-                <div class="text-3xl mb-2">🔶</div>
-                <div class="font-semibold">Haxe</div>
-            </div>
-            <div class="p-4 bg-white/50 dark:bg-dark-800/50 rounded-xl">
-                <div class="text-3xl mb-2">🥟</div>
-                <div class="font-semibold">Bun</div>
-            </div>
-            <div class="p-4 bg-white/50 dark:bg-dark-800/50 rounded-xl">
-                <div class="text-3xl mb-2">📡</div>
-                <div class="font-semibold">HTMX</div>
-            </div>
-            <div class="p-4 bg-white/50 dark:bg-dark-800/50 rounded-xl">
-                <div class="text-3xl mb-2">🎨</div>
-                <div class="font-semibold">Tailwind</div>
+            <div class="stagger-3 card-glow bg-dark-800 border border-gray-800 rounded-xl p-6">
+                <h3 class="font-semibold mb-3 text-accent-400">Philosophy</h3>
+                <p class="text-gray-400 text-sm">
+                    Open designs, no patents<br>
+                    Community-driven development<br>
+                    Accessibility over profit
+                </p>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+</section>
+
+<section class="bg-dark-950/50 border-y border-gray-800">
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+        <h2 class="text-2xl font-bold mb-8 text-center">Why DIY?</h2>
+        <div class="max-w-3xl mx-auto space-y-6 text-gray-400">
+            <p>
+                The pro audio market is resistant to new technology. Manufacturers 
+                don't want to explain something unfamiliar to customers. Previous 
+                attempts to commercialize DML for professional use haven't succeeded.
+            </p>
+            <p>
+                But the DIY sound system community? They're experimenters. They're 
+                builders. They care about sound quality over brand names. They're 
+                the perfect people to prove what DML can do.
+            </p>
+            <p class="text-gray-300">
+                Build it. Play it at your parties. Let people hear the difference. 
+                That's how this technology spreads — from the ground up.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="container mx-auto px-4 py-16 max-w-6xl text-center">
+    <h2 class="stagger-1 text-2xl font-bold mb-4">Questions?</h2>
+    <p class="stagger-2 text-gray-400 max-w-xl mx-auto mb-8">
+        We're always happy to talk about the technology, the project, 
+        or potential collaborations.
+    </p>
+    <a href="/contact" hx-get="/contact" hx-target="#main-content" hx-push-url="true" hx-swap="innerHTML"
+       class="stagger-3 btn-primary pulse-on-hover inline-block px-8 py-3 bg-accent-600 hover:bg-accent-500 text-white font-semibold rounded-lg">
+        Get in Touch →
+    </a>
+</section>
