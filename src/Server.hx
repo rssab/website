@@ -57,15 +57,19 @@ class Server {
         final path = url.pathname;
         final isHtmx = req.headers.get('HX-Request') == 'true';
         
-        return switch (path) {
-            case '/', '/home': renderPage('Home', 'home', {}, isHtmx);
-            case '/mission': renderPage('Mission', 'mission', {}, isHtmx);
-            case '/about': renderPage('About', 'about', {}, isHtmx);
-            case '/equipment': renderPage('Equipment', 'equipment', {}, isHtmx);
-            case '/finances': renderPage('Finances', 'finances', {}, isHtmx);
-            case '/contact': renderPage('Contact', 'contact', {}, isHtmx);
-            case '/subscribe': handleSubscribe(req);
-            default: notFound(isHtmx);
+        return if (path.startsWith('/static/')) {
+            serveStaticFile(path);
+        } else {
+            switch (path) {
+                case '/', '/home': renderPage('Home', 'home', {}, isHtmx);
+                case '/mission': renderPage('Mission', 'mission', {}, isHtmx);
+                case '/about': renderPage('About', 'about', {}, isHtmx);
+                case '/equipment': renderPage('Equipment', 'equipment', {}, isHtmx);
+                case '/finances': renderPage('Finances', 'finances', {}, isHtmx);
+                case '/contact': renderPage('Contact', 'contact', {}, isHtmx);
+                case '/subscribe': handleSubscribe(req);
+                default: notFound(isHtmx);
+            }
         };
     }
     
@@ -114,6 +118,30 @@ class Server {
         return new Response(html, {
             headers: createHeaders('text/html; charset=utf-8')
         });
+    }
+    
+    static function serveStaticFile(path:String):Response {
+        final filePath = '.' + path; // Remove leading slash, add current directory
+        
+        try {
+            final content = Fs.readFileSync(filePath, {encoding: 'utf8'});
+            final contentType = if (path.endsWith('.js')) {
+                'application/javascript; charset=utf-8';
+            } else if (path.endsWith('.css')) {
+                'text/css; charset=utf-8';
+            } else {
+                'text/plain; charset=utf-8';
+            }
+            
+            return new Response(content, {
+                headers: createHeaders(contentType)
+            });
+        } catch (e:Dynamic) {
+            return new Response('File not found', {
+                status: 404,
+                headers: createHeaders('text/plain; charset=utf-8')
+            });
+        }
     }
     
     static function notFound(isHtmx:Bool):Response {

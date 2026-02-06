@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>::title:: | HxHTMX</title>
+    <title>::title:: | Resonant Systems</title>
+    <meta name="description" content="Open sound technology. DIY DML speaker kits that deliver festival-quality audio.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script>
@@ -12,8 +13,24 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: { 50: "#f0f9ff", 100: "#e0f2fe", 200: "#bae6fd", 300: "#7dd3fc", 400: "#38bdf8", 500: "#0ea5e9", 600: "#0284c7", 700: "#0369a1", 800: "#075985", 900: "#0c4a6e" },
-                        dark: { 800: "#1e293b", 900: "#0f172a", 950: "#020617" }
+                        accent: { 
+                            50: "#fff7ed", 
+                            100: "#ffedd5", 
+                            200: "#fed7aa", 
+                            300: "#fdba74", 
+                            400: "#fb923c", 
+                            500: "#f97316", 
+                            600: "#ea580c", 
+                            700: "#c2410c", 
+                            800: "#9a3412", 
+                            900: "#7c2d12" 
+                        },
+                        dark: { 
+                            700: "#1a1a1a",
+                            800: "#121212", 
+                            900: "#0a0a0a", 
+                            950: "#050505" 
+                        }
                     }
                 }
             }
@@ -29,31 +46,158 @@
     </script>
     <style>
         .htmx-request { opacity: 0.5; transition: opacity 300ms; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: subtle-glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes subtle-glow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.1) contrast(1.1); }
+        }
+        
+        /* Staggered animations */
+        .stagger-1 { animation: fadeInUp 0.8s ease-out 0.1s both; }
+        .stagger-2 { animation: fadeInUp 0.8s ease-out 0.2s both; }
+        .stagger-3 { animation: fadeInUp 0.8s ease-out 0.3s both; }
+        .stagger-4 { animation: fadeInUp 0.8s ease-out 0.4s both; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Enhanced hover effects */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Button animations */
+        .btn-primary {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3), 0 4px 6px -2px rgba(249, 115, 22, 0.2);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            background-color: rgba(249, 115, 22, 0.1);
+            border-color: #f97316;
+        }
+        
+        /* Navigation hover effects */
+        .nav-link {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #f97316, #fb923c);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%);
+        }
+        .nav-link:hover:after {
+            width: 80%;
+        }
+        
+        /* Card hover glow effect */
+        .card-glow {
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-glow:hover {
+            transform: translateY(-2px);
+        }
+        .card-glow:before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.3), rgba(251, 146, 60, 0.2), rgba(253, 186, 116, 0.1));
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+        .card-glow:hover:before {
+            opacity: 1;
+        }
+        
+        /* Pulse effect for CTA */
+        .pulse-on-hover:hover {
+            animation: gentlePulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes gentlePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-dark-900 text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+<body class="bg-dark-900 text-gray-100 min-h-screen relative">
     ::navigation::
     <main id="main-content" class="container mx-auto px-4 py-8 max-w-6xl fade-in">
         ::content::
     </main>
     ::footer::
     <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains("dark");
-            if (isDark) {
-                html.classList.remove("dark");
-                localStorage.setItem("theme", "light");
-            } else {
-                html.classList.add("dark");
-                localStorage.setItem("theme", "dark");
-            }
-        }
         document.body.addEventListener("htmx:afterSwap", function(e) {
             e.detail.elt.classList.add("fade-in");
+            
+            // Reset and restart staggered animations
+            const staggerElements = e.detail.elt.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4');
+            staggerElements.forEach((el) => {
+                el.style.animation = 'none';
+                el.offsetHeight; // Trigger reflow
+                el.style.animation = null;
+            });
+        });
+        
+        // Add scroll-triggered animations for better UX
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                } else {
+                    entry.target.style.animationPlayState = 'paused';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.stagger-1, .stagger-2, .stagger-3, .stagger-4').forEach((el) => {
+                observer.observe(el);
+            });
         });
     </script>
+    <script src="/static/js/resonant-bg.js" defer></script>
 </body>
 </html>
