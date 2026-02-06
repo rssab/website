@@ -1,0 +1,14 @@
+{
+  "name": "resonant-systems-site",
+  "scripts": {
+    "build:css": "bunx tailwindcss -i src/styles/input.css -o static/css/styles.css --minify",
+    "watch:css": "bunx tailwindcss -i src/styles/input.css -o static/css/styles.css --watch",
+    "build": "bun run build:css && haxe build.hxml",
+    "start": "bun run bin/server.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "tailwindcss": "^4.1.18"
+  }
+}

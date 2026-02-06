@@ -5,45 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>::title:: | Resonant Systems</title>
     <meta name="description" content="Open sound technology. DIY DML speaker kits that deliver festival-quality audio.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        accent: { 
-                            50: "#fff7ed", 
-                            100: "#ffedd5", 
-                            200: "#fed7aa", 
-                            300: "#fdba74", 
-                            400: "#fb923c", 
-                            500: "#f97316", 
-                            600: "#ea580c", 
-                            700: "#c2410c", 
-                            800: "#9a3412", 
-                            900: "#7c2d12" 
-                        },
-                        dark: { 
-                            700: "#1a1a1a",
-                            800: "#121212", 
-                            900: "#0a0a0a", 
-                            950: "#050505" 
-                        }
-                    }
-                }
-            }
-        };
-    </script>
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem("theme");
-            if (savedTheme === "light") {
-                document.documentElement.classList.remove("dark");
-            }
-        })();
-    </script>
     <style>
         .htmx-request { opacity: 0.5; transition: opacity 300ms; }
         .fade-in { animation: fadeIn 0.6s ease-out; }
