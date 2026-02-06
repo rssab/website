@@ -21,7 +21,9 @@ class ResonantBackground {
         
         // Scroll-based camera movement
         this.scrollY = 0;
+        this.targetScrollY = 0;
         this.scrollInfluence = 0.0008; // How much scroll affects camera
+        this.scrollSmoothing = 0.08; // Smoothing factor for scroll
         
         this.pageDeltas = {
             '/': { x: 0, y: 0.3 },
@@ -42,7 +44,9 @@ class ResonantBackground {
     
     setupScrollTracking() {
         window.addEventListener('scroll', () => {
-            this.scrollY = window.scrollY;
+            // Clamp to valid range to avoid overscroll bounce
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            this.targetScrollY = Math.max(0, Math.min(window.scrollY, maxScroll));
         }, { passive: true });
     }
     
@@ -312,8 +316,9 @@ class ResonantBackground {
         const timeLocation = this.gl.getUniformLocation(this.program, 'iTime');
         this.gl.uniform1f(timeLocation, currentTime);
         
-        // Update pan with scroll influence
+        // Update pan with scroll influence (smoothed)
         this.updatePan();
+        this.scrollY += (this.targetScrollY - this.scrollY) * this.scrollSmoothing;
         const scrollPanY = this.scrollY * this.scrollInfluence;
         const panLocation = this.gl.getUniformLocation(this.program, 'u_pan');
         this.gl.uniform2f(panLocation, this.panX, this.panY - scrollPanY);
