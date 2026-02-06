@@ -107,10 +107,10 @@ class ResonantBackground {
             // Multiple concentric rings
             float concentricWaves(vec2 uv, vec2 center, float time) {
                 float result = 0.0;
-                // Layer multiple ring frequencies - all very slow
-                result += radiatingRing(uv, center, time, 0.02, 8.0) * 0.4;
-                result += radiatingRing(uv, center, time, 0.015, 12.0) * 0.3;
-                result += radiatingRing(uv, center, time, 0.01, 16.0) * 0.2;
+                // Layer multiple ring frequencies - slow but visible
+                result += radiatingRing(uv, center, time, 0.025, 6.0) * 0.5;
+                result += radiatingRing(uv, center, time, 0.018, 10.0) * 0.4;
+                result += radiatingRing(uv, center, time, 0.012, 14.0) * 0.3;
                 return result;
             }
             
@@ -124,24 +124,24 @@ class ResonantBackground {
                 
                 vec3 color = bg;
                 
-                // Multiple radiating wave sources - subtle but visible
-                float intensity = 0.025;
+                // Multiple radiating wave sources - visible but not distracting
+                float intensity = 0.12;
                 
-                // Center emanation
-                color += concentricWaves(uvAspect, vec2(0.5, 0.5), time) * orange1 * intensity;
+                // Center emanation - strongest
+                color += concentricWaves(uvAspect, vec2(0.5, 0.5), time) * orange1 * intensity * 1.2;
                 
                 // Corner emanations - offset timing for variety
-                color += concentricWaves(uvAspect, vec2(0.15, 0.2), time + 10.0) * orange2 * intensity * 0.8;
-                color += concentricWaves(uvAspect, vec2(0.85, 0.8), time + 20.0) * orange3 * intensity * 0.8;
-                color += concentricWaves(uvAspect, vec2(0.8, 0.25), time + 30.0) * orange1 * intensity * 0.6;
-                color += concentricWaves(uvAspect, vec2(0.2, 0.75), time + 40.0) * orange2 * intensity * 0.6;
+                color += concentricWaves(uvAspect, vec2(0.1, 0.15), time + 10.0) * orange2 * intensity;
+                color += concentricWaves(uvAspect, vec2(0.9, 0.85), time + 20.0) * orange3 * intensity;
+                color += concentricWaves(uvAspect, vec2(0.85, 0.2), time + 30.0) * orange1 * intensity * 0.8;
+                color += concentricWaves(uvAspect, vec2(0.15, 0.8), time + 40.0) * orange2 * intensity * 0.8;
                 
-                // Very subtle vignette
-                float vignette = 1.0 - length(uv - 0.5) * 0.3;
+                // Gentle vignette
+                float vignette = 1.0 - length(uv - 0.5) * 0.2;
                 color *= vignette;
                 
-                // Subtle breathing - very slow
-                color *= 0.85 + 0.15 * sin(time * 0.5);
+                // Breathing effect
+                color *= 0.8 + 0.2 * sin(time * 0.3);
                 
                 fragColor = vec4(color, 1.0);
             }
