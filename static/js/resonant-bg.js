@@ -17,17 +17,17 @@ class ResonantBackground {
         this.panY = 0;
         this.targetPanX = 0;
         this.targetPanY = 0;
-        this.panSpeed = 0.08;
+        this.panSpeed = 0.04;
         
-        // Direction mapping for pages
+        // Direction mapping for pages (stronger movement)
         this.pageDirections = {
-            '/': { x: 0, y: -0.15 },           // Home: from top
-            '/home': { x: 0, y: -0.15 },       // Home: from top
-            '/technology': { x: 0.2, y: 0 },   // Technology: from right
-            '/kits': { x: -0.2, y: 0 },        // Kits: from left
-            '/community': { x: 0, y: 0.15 },   // Community: from bottom
-            '/about': { x: -0.15, y: -0.1 },   // About: from top-left
-            '/contact': { x: 0.15, y: 0.1 },   // Contact: from bottom-right
+            '/': { x: 0, y: -0.5 },            // Home: from top
+            '/home': { x: 0, y: -0.5 },        // Home: from top
+            '/technology': { x: 0.6, y: 0 },   // Technology: from right
+            '/kits': { x: -0.6, y: 0 },        // Kits: from left
+            '/community': { x: 0, y: 0.5 },    // Community: from bottom
+            '/about': { x: -0.4, y: -0.3 },    // About: from top-left
+            '/contact': { x: 0.4, y: 0.3 },    // Contact: from bottom-right
         };
         
         this.init();
@@ -269,17 +269,12 @@ class ResonantBackground {
             const path = e.detail.pathInfo?.requestPath || e.detail.path || '';
             const direction = this.pageDirections[path] || { x: 0, y: 0 };
             
-            // Set target pan (opposite direction for "coming from" effect)
-            this.targetPanX = -direction.x;
-            this.targetPanY = -direction.y;
-        });
-        
-        document.body.addEventListener('htmx:afterSwap', () => {
-            // After content loads, pan back to center
-            setTimeout(() => {
-                this.targetPanX = 0;
-                this.targetPanY = 0;
-            }, 100);
+            // Immediately jump to starting position (where content comes FROM)
+            this.panX = direction.x;
+            this.panY = direction.y;
+            // Target is center - will smoothly animate there
+            this.targetPanX = 0;
+            this.targetPanY = 0;
         });
     }
     
