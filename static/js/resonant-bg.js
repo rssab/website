@@ -124,24 +124,24 @@ class ResonantBackground {
                 
                 vec3 color = bg;
                 
-                // Multiple radiating wave sources - very subtle intensity
-                float intensity = 0.006;
+                // Multiple radiating wave sources - subtle but visible
+                float intensity = 0.025;
                 
                 // Center emanation
                 color += concentricWaves(uvAspect, vec2(0.5, 0.5), time) * orange1 * intensity;
                 
                 // Corner emanations - offset timing for variety
-                color += concentricWaves(uvAspect, vec2(0.15, 0.2), time + 10.0) * orange2 * intensity * 0.7;
-                color += concentricWaves(uvAspect, vec2(0.85, 0.8), time + 20.0) * orange3 * intensity * 0.7;
-                color += concentricWaves(uvAspect, vec2(0.8, 0.25), time + 30.0) * orange1 * intensity * 0.5;
-                color += concentricWaves(uvAspect, vec2(0.2, 0.75), time + 40.0) * orange2 * intensity * 0.5;
+                color += concentricWaves(uvAspect, vec2(0.15, 0.2), time + 10.0) * orange2 * intensity * 0.8;
+                color += concentricWaves(uvAspect, vec2(0.85, 0.8), time + 20.0) * orange3 * intensity * 0.8;
+                color += concentricWaves(uvAspect, vec2(0.8, 0.25), time + 30.0) * orange1 * intensity * 0.6;
+                color += concentricWaves(uvAspect, vec2(0.2, 0.75), time + 40.0) * orange2 * intensity * 0.6;
                 
                 // Very subtle vignette
                 float vignette = 1.0 - length(uv - 0.5) * 0.3;
                 color *= vignette;
                 
                 // Subtle breathing - very slow
-                color *= 0.9 + 0.1 * sin(time * 0.5);
+                color *= 0.85 + 0.15 * sin(time * 0.5);
                 
                 fragColor = vec4(color, 1.0);
             }
