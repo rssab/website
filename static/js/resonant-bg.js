@@ -228,12 +228,8 @@ class ResonantBackground {
                 
                 vec3 rayPos = castRay(cameraPos, rayDir, iTime);
                 
-                // RGB laser mix — saturated, lively
-                float px = length(rayPos) * 0.5;
-                float r = pow(max(0.0, sin(px + iTime * 0.6)), 2.0);
-                float g = pow(max(0.0, sin(px * 1.3 + iTime * 0.7 + 2.094)), 2.0);
-                float b = pow(max(0.0, sin(px * 0.9 + iTime * 0.5 + 4.189)), 2.0);
-                vec3 color = vec3(r * 0.95, g * 0.9, b * 0.95);
+                // base color (orange instead of blue)
+                vec3 color = vec3(0.43, 0.12, 0.01);
                 
                 color += (rayDir*0.02);
                 
