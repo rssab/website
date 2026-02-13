@@ -3,16 +3,16 @@
 @source "../../templates/**/*.html";
 
 @theme {
-  --color-accent-50: #fff7ed;
-  --color-accent-100: #ffedd5;
-  --color-accent-200: #fed7aa;
-  --color-accent-300: #fdba74;
-  --color-accent-400: #fb923c;
-  --color-accent-500: #f97316;
-  --color-accent-600: #ea580c;
-  --color-accent-700: #c2410c;
-  --color-accent-800: #9a3412;
-  --color-accent-900: #7c2d12;
+  --color-accent-50: #fafafa;
+  --color-accent-100: #f0f0f0;
+  --color-accent-200: #d4d4d8;
+  --color-accent-300: #b8b8bf;
+  --color-accent-400: #a1a1aa;
+  --color-accent-500: #8a8a93;
+  --color-accent-600: #71717a;
+  --color-accent-700: #52525b;
+  --color-accent-800: #3f3f46;
+  --color-accent-900: #27272a;
   
   --color-dark-700: #1a1a1a;
   --color-dark-800: #121212;
